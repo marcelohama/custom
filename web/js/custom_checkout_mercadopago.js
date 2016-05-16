@@ -1,3 +1,38 @@
+var config_mp = {
+  debug: false,
+  create_token_on_event: true,
+  site_id: mercadopago_site_id,
+  public_key: mercadopago_public_key,
+  inputs_to_create_token: [
+    "cardNumber",
+    "cardExpirationMonth",
+    "cardExpirationYear",
+    "cardholderName",
+    "securityCode",
+    "docType",
+    "docNumber"
+  ],
+  selectors:{
+    submit: "#submit",
+    box_loading: "#mp-box-loading",
+    site_id: "#site_id",
+    form: '#mercadopago-form',
+    utilities_fields: "#mercadopago-utilities"
+  },
+  paths:{
+    loading: "images/loading.gif"
+  }
+}
+
+Initialize();
+
+/*
+*
+*
+* payment methods
+*
+*/
+
 function getBin() {
   var cardSelector = document.querySelector("#cardId");
   if (cardSelector && cardSelector[cardSelector.options.selectedIndex].value != "-1") {
@@ -114,6 +149,14 @@ function setPaymentMethodInfo(status, response) {
   }
 };
 
+
+/*
+*
+*
+* Issuers
+*
+*/
+
 function showCardIssuers(status, issuers) {
   console.log("showCardIssuers - here");
 
@@ -152,6 +195,26 @@ function setInstallmentsByIssuerId(status, response) {
   }, setInstallmentInfo);
 };
 
+
+
+function hideIssuer(){
+
+  var opt = document.createElement('option');
+  opt.value = "1";
+  opt.innerHTML = "Other Bank";
+
+  document.querySelector("#issuer").innerHTML = "";
+  document.querySelector("#issuer").appendChild(opt);
+  document.querySelector("#issuer").setAttribute('disabled', 'disabled');
+}
+
+/*
+*
+*
+* Installments
+*
+*/
+
 function setInstallmentInfo(status, response) {
   var selectorInstallments = document.querySelector("#installments"),
   fragment = document.createDocumentFragment();
@@ -172,6 +235,14 @@ function setInstallmentInfo(status, response) {
   }
 };
 
+
+/*
+*
+*
+* Customer & Cards
+*
+*/
+
 function cardsHandler() {
   clearOptions();
   var cardSelector = document.querySelector("#cardId"),
@@ -184,29 +255,6 @@ function cardsHandler() {
     }, setPaymentMethodInfo);
   }
 }
-
-
-
-function hideIssuer(){
-
-  var opt = document.createElement('option');
-  opt.value = "1";
-  opt.innerHTML = "Other Bank";
-
-  document.querySelector("#issuer").innerHTML = "";
-  document.querySelector("#issuer").appendChild(opt);
-  document.querySelector("#issuer").setAttribute('disabled', 'disabled');
-}
-
-function addEvent(el, eventName, handler){
-  if (el.addEventListener) {
-    el.addEventListener(eventName, handler);
-  } else {
-    el.attachEvent('on' + eventName, function(){
-      handler.call(el);
-    });
-  }
-};
 
 
 /*
@@ -301,6 +349,7 @@ function validateInputsCreateToken(){
 }
 
 function createToken(){
+  hideErrors();
 
   //show loading
   document.querySelector(config_mp.selectors.box_loading).style.background = "url("+config_mp.paths.loading+") 50% 50% no-repeat #fff";
@@ -318,7 +367,7 @@ function sdkResponseHandler(status, response) {
   document.querySelector(config_mp.selectors.box_loading).style.background = "";
 
   if (status != 200 && status != 201) {
-    console.log(response);
+    showErrors(response);
   }else{
     var token = document.querySelector('#token');
     token.value = response.id;
@@ -331,12 +380,62 @@ function sdkResponseHandler(status, response) {
   }
 }
 
+/*
+*
+*
+* Show errors
+*
+*/
+
+function showErrors(response){
+  console.log(response);
+
+  for(var x = 0; x < response.cause.length; x++){
+    var error = response.cause[x];
+    var $span = document.querySelector('#mp-error-' + error.code);
+    var $input = document.querySelector($span.getAttribute("data-main"));
+
+    $span.style.display = 'inline-block';
+    $input.classList.add("mp-error-input");
+
+  }
+
+  return;
+}
+
+function hideErrors(){
+
+  for(var x = 0; x < document.querySelectorAll('[data-checkout]').length; x++){
+    var $field = document.querySelectorAll('[data-checkout]')[x];
+    $field.classList.remove("mp-error-input");
+
+  } //end for
+
+  for(var x = 0; x < document.querySelectorAll('.mp-error').length; x++){
+    var $span = document.querySelectorAll('.mp-error')[x];
+    $span.style.display = 'none';
+
+  }
+
+  return;
+}
 
 /*
 *
 * Add events to guessing
 *
 */
+
+
+function addEvent(el, eventName, handler){
+  if (el.addEventListener) {
+    el.addEventListener(eventName, handler);
+  } else {
+    el.attachEvent('on' + eventName, function(){
+      handler.call(el);
+    });
+  }
+};
 
 
 addEvent(document.querySelector('input[data-checkout="cardNumber"]'), 'keyup', guessingPaymentMethod);
@@ -348,72 +447,54 @@ cardsHandler();
 /*
 *
 *
-* Initialization functions
+* Initialization function
 *
 */
 
-var config_mp = {
-  create_token_on_event: true,
-  site_id: mercadopago_site_id,
-  public_key: mercadopago_public_key,
-  inputs_to_create_token: [
-    "cardNumber",
-    "cardExpirationMonth",
-    "cardExpirationYear",
-    "cardholderName",
-    "securityCode",
-    "docType",
-    "docNumber"
-  ],
-  selectors:{
-    submit: "#submit",
-    box_loading: "#mp-box-loading",
-    site_id: "#site_id",
-    form: '#mercadopago-form'
-  },
-  paths:{
-    loading: "images/loading.gif"
+function Initialize(){
+
+  if(config_mp.create_token_on_event){
+    createTokenByEvent();
+  }else{
+    createTokenBySubmit()
+  }
+
+  Mercadopago.setPublishableKey(config_mp.public_key);
+
+  if(config_mp.site_id != "MLM"){
+    Mercadopago.getIdentificationTypes();
+  }
+
+  if(config_mp.site_id == "MLM"){
+
+    //hide documento for mex
+    document.querySelector(".mp-doc").style.display = 'none';
+    document.querySelector(".mp-paymentMethodsSelector").removeAttribute('style');
+
+    //removing not used fields for this country
+    config_mp.inputs_to_create_token.splice(config_mp.inputs_to_create_token.indexOf("docType"), 1);
+    config_mp.inputs_to_create_token.splice(config_mp.inputs_to_create_token.indexOf("docNumber"), 1);
+
+    //get payment methods and populate selector
+    getPaymentMethods();
+  }
+
+  if(config_mp.site_id == "MLB"){
+
+    document.querySelector(".mp-docType").style.display = 'none';
+    document.querySelector(".mp-issuer").style.display = 'none';
+    //ajust css
+    document.querySelector(".mp-docNumber").classList.remove("mp-col-75");
+    document.querySelector(".mp-docNumber").classList.add("mp-col-100");
+
+  }else if (config_mp.site_id == "MCO") {
+    document.querySelector(".mp-issuer").style.display = 'none';
+  }
+
+  document.querySelector(config_mp.selectors.site_id).value = config_mp.site_id;
+
+  if(config_mp.debug){
+    document.querySelector(config_mp.selectors.utilities_fields).removeAttribute('style');
+    console.log(config_mp);
   }
 }
-
-if(config_mp.create_token_on_event){
-  createTokenByEvent();
-}else{
-  createTokenBySubmit()
-}
-
-Mercadopago.setPublishableKey(config_mp.public_key);
-
-if(config_mp.site_id != "MLM"){
-  Mercadopago.getIdentificationTypes();
-}
-
-if(config_mp.site_id == "MLM"){
-
-  //hide documento for mex
-  document.querySelector(".mp-doc").style.display = 'none';
-  document.querySelector(".mp-paymentMethodsSelector").removeAttribute('style');
-
-  //removing not used fields for this country
-  config_mp.inputs_to_create_token.splice(config_mp.inputs_to_create_token.indexOf("docType"), 1);
-  config_mp.inputs_to_create_token.splice(config_mp.inputs_to_create_token.indexOf("docNumber"), 1);
-
-  //get payment methods and populate selector
-  getPaymentMethods();
-}
-
-if(config_mp.site_id == "MLB"){
-
-  document.querySelector(".mp-docType").style.display = 'none';
-  document.querySelector(".mp-issuer").style.display = 'none';
-  //ajust css
-  document.querySelector(".mp-docNumber").classList.remove("mp-col-75");
-  document.querySelector(".mp-docNumber").classList.add("mp-col-100");
-
-}else if (config_mp.site_id == "MCO") {
-  document.querySelector(".mp-issuer").style.display = 'none';
-}
-
-document.querySelector(config_mp.selectors.site_id).value = config_mp.site_id;
-
-console.log(config_mp);
