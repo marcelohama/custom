@@ -494,7 +494,7 @@ function Initialize(){
   document.querySelector(config_mp.selectors.site_id).value = config_mp.site_id;
 
   if(config_mp.debug){
-    document.querySelector(config_mp.selectors.utilities_fields).removeAttribute('style');
+    document.querySelector(config_mp.selectors.utilities_fields).style.display = 'inline-block';
     console.log(config_mp);
   }
 }

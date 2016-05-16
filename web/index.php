@@ -176,7 +176,7 @@ include "lib/test.php";
         </div>
       </div>
 
-      <div class="mp-box-inputs mp-col-100" style="display:none;" id="mercadopago-utilities">
+      <div class="mp-box-inputs mp-col-100" id="mercadopago-utilities">
         <input type="text" name="site_id" id="site_id" />
         <input type="text" name="amount" id="amount" value="249.99"/>
         <input type="text" name="paymentMethodId" id="paymentMethodId"/>

@@ -538,7 +538,7 @@ $posible_test = array(
     $site_id = $_REQUEST['site_id'];
   ?>
 
-    <li class="separate"><?php echo $site_id; ?></li>
+    <li class="separate">Quick Test (<?php echo $site_id; ?>)</li>
 
     <?php
     foreach ($posible_test[$site_id] as $case) {
@@ -546,7 +546,7 @@ $posible_test = array(
     ?>
 
       <li onclick="setValuesOnInput(<?php echo $variable_function; ?>)" class="<?php echo $case['type_case']?>">
-        <p><b><?php echo $site_id; ?></b> - </b></label> <?php echo $case['title']; ?></p>
+        <p></b></label> <?php echo $case['title']; ?></p>
       </li>
 
     <?php } ?>

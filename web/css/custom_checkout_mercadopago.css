@@ -116,6 +116,10 @@ body{
   font-weight: 100;
 }
 
+#mercadopago-utilities{
+  display: none;
+}
+
 #submit{
   color: #fff;
   background-color: #337ab7;
