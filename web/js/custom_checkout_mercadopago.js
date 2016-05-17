@@ -15,18 +15,27 @@ var config_mp = {
     "docNumber"
   ],
   selectors:{
-    cardNumber: "#cardNumber",
-    installments: "#installments",
     cardId: "#cardId",
-    submit: "#submit",
-    amount: "#amount",
+
+    cardNumber: "#cardNumber",
+    cardExpirationMonth: "#cardExpirationMonth",
+    cardExpirationYear: "#cardExpirationYear",
+    cardholderName: "#cardholderName",
+    securityCode: "#securityCode",
+    docType: "#docType",
+    docNumber: "#docNumber",
+    issuer: "#issuer",
+    installments: "#installments",
+
     paymentMethodId: "#paymentMethodId",
     paymentMethodIdSelector: "#paymentMethodIdSelector",
-    issuer: "#issuer",
+    amount: "#amount",
     token: "#token",
     cardTruncated: "#cardTruncated",
-    box_loading: "#mp-box-loading",
     site_id: "#site_id",
+
+    box_loading: "#mp-box-loading",
+    submit: "#submit",
     form: '#mercadopago-form',
     utilities_fields: "#mercadopago-utilities"
   },
