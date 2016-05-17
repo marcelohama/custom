@@ -205,21 +205,23 @@ function hideIssuer(){
 */
 
 function setInstallmentInfo(status, response) {
-  var selectorInstallments = document.querySelector(config_mp.selectors.installments),
-  fragment = document.createDocumentFragment();
-
-  selectorInstallments.options.length = 0;
+  var selectorInstallments = document.querySelector(config_mp.selectors.installments);
 
   if (response.length > 0) {
-    var option = new Option("Choose...", '-1'),
+
+    var html_option = '<option value="-1">Choose...</option>';
     payerCosts = response[0].payer_costs;
 
-    fragment.appendChild(option);
+    // fragment.appendChild(option);
     for (var i = 0; i < payerCosts.length; i++) {
-      option = new Option(payerCosts[i].recommended_message || payerCosts[i].installments, payerCosts[i].installments);
-      fragment.appendChild(option);
+      html_option += '<option value="'+ payerCosts[i].installments +'">' + (payerCosts[i].recommended_message || payerCosts[i].installments) + '</option>';
     }
-    selectorInstallments.appendChild(fragment);
+
+    // not take the user's selection if equal
+    if(selectorInstallments.innerHTML != html_option){
+      selectorInstallments.innerHTML = html_option;
+    }
+
     selectorInstallments.removeAttribute('disabled');
   }
 };
