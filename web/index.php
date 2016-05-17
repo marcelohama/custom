@@ -67,11 +67,12 @@ include "lib/test.php";
     );
     ?>
 
-    <form action="post.php" method="post" id="mercadopago-form" name="pay" >
+    <!-- <div id="mercadopago-form" > -->
+      <form action="post.php" method="post" id="mercadopago-form" >
 
       <div class="mp-box-inputs mp-line mp-paymentMethodsSelector" style="display:none;">
         <label for="paymentMethodIdSelector"><?php echo $form_labels['form']['payment_method']; ?> <em>*</em></label>
-        <select id="paymentMethodIdSelector" name="paymentMethodIdSelector" data-checkout="paymentMethodIdSelector">
+        <select id="paymentMethodIdSelector" name="mercadopago_custom[paymentMethodIdSelector]" data-checkout="paymentMethodIdSelector">
         </select>
       </div>
 
@@ -85,7 +86,7 @@ include "lib/test.php";
       <div class="mp-box-inputs mp-line">
         <div class="mp-box-inputs mp-col-45">
           <label for="cardExpirationMonth"><?php echo $form_labels['form']['expiration_month']; ?> <em>*</em></label>
-          <select id="cardExpirationMonth" data-checkout="cardExpirationMonth">
+          <select id="cardExpirationMonth" data-checkout="cardExpirationMonth" name="mercadopago_custom[cardExpirationMonth]">
             <option value="-1"> <?php echo $form_labels['form']['month']; ?> </option>
             <?php for ($x=1; $x<=12; $x++): ?>
               <option value="<?php echo $x; ?>"> <?php echo $x; ?></option>
@@ -101,7 +102,7 @@ include "lib/test.php";
 
         <div class="mp-box-inputs mp-col-45">
           <label for="cardExpirationYear"><?php echo $form_labels['form']['expiration_year']; ?> <em>*</em></label>
-          <select  id="cardExpirationYear" data-checkout="cardExpirationYear">
+          <select  id="cardExpirationYear" data-checkout="cardExpirationYear" name="mercadopago_custom[cardExpirationYear]">
             <option value="-1"> <?php echo $form_labels['form']['year']; ?> </option>
             <?php for ($x=date("Y"); $x<= date("Y") + 10; $x++): ?>
               <option value="<?php echo $x; ?>"> <?php echo $x; ?> </option>
@@ -118,7 +119,7 @@ include "lib/test.php";
 
       <div class="mp-box-inputs mp-col-100">
         <label for="cardholderName"><?php echo $form_labels['form']['card_holder_name']; ?> <em>*</em></label>
-        <input type="text" id="cardholderName" name="cardholderName" data-checkout="cardholderName" placeholder="APRO" />
+        <input type="text" id="cardholderName" name="mercadopago_custom[cardholderName]" data-checkout="cardholderName" placeholder="APRO" />
 
         <span class="mp-error" id="mp-error-221" data-main="#cardholderName"> <?php echo $form_labels['error']['221']; ?> </span>
         <span class="mp-error" id="mp-error-316" data-main="#cardholderName"> <?php echo $form_labels['error']['316']; ?> </span>
@@ -127,7 +128,7 @@ include "lib/test.php";
       <div class="mp-box-inputs mp-line">
         <div class="mp-box-inputs mp-col-45">
           <label for="securityCode"><?php echo $form_labels['form']['security_code']; ?> <em>*</em></label>
-          <input type="text" id="securityCode" data-checkout="securityCode" placeholder="123" />
+          <input type="text" id="securityCode" data-checkout="securityCode" placeholder="123" name="mercadopago_custom[securityCode]"/>
 
           <span class="mp-error" id="mp-error-224" data-main="#securityCode"> <?php echo $form_labels['error']['224']; ?> </span>
           <span class="mp-error" id="mp-error-E302" data-main="#securityCode"> <?php echo $form_labels['error']['E302']; ?> </span>
@@ -137,7 +138,7 @@ include "lib/test.php";
       <div class="mp-box-inputs mp-col-100 mp-doc">
         <div class="mp-box-inputs mp-col-35 mp-docType">
           <label for="docType"><?php echo $form_labels['form']['document_type']; ?> <em>*</em></label>
-          <select id="docType" name="docType" data-checkout="docType"></select>
+          <select id="docType" data-checkout="docType" name="mercadopago_custom[docType]"></select>
 
           <span class="mp-error" id="mp-error-212" data-main="#docType"> <?php echo $form_labels['error']['212']; ?> </span>
           <span class="mp-error" id="mp-error-322" data-main="#docType"> <?php echo $form_labels['error']['322']; ?> </span>
@@ -145,7 +146,7 @@ include "lib/test.php";
 
         <div class="mp-box-inputs mp-col-65 mp-docNumber">
           <label for="docNumber"><?php echo $form_labels['form']['document_number']; ?> <em>*</em></label>
-          <input type="text" id="docNumber" name="docNumber" data-checkout="docNumber" placeholder="12345678" />
+          <input type="text" id="docNumber" data-checkout="docNumber" placeholder="12345678" name="mercadopago_custom[docNumber]"/>
 
           <span class="mp-error" id="mp-error-214" data-main="#docNumber"> <?php echo $form_labels['error']['214']; ?> </span>
           <span class="mp-error" id="mp-error-324" data-main="#docNumber"> <?php echo $form_labels['error']['324']; ?> </span>
@@ -154,40 +155,46 @@ include "lib/test.php";
 
       <div class="mp-box-inputs mp-col-100 mp-issuer">
         <label for="issuer"><?php echo $form_labels['form']['issuer']; ?> <em>*</em></label>
-        <select id="issuer" name="issuer" data-checkout="issuer"></select>
+        <select id="issuer" data-checkout="issuer" name="mercadopago_custom[issuer]"></select>
 
         <span class="mp-error" id="mp-error-220" data-main="#issuer"> <?php echo $form_labels['error']['220']; ?> </span>
       </div>
 
       <div class="mp-box-inputs mp-col-100">
         <label for="installments"><?php echo $form_labels['form']['installments']; ?> <em>*</em></label>
-        <select id="installments" name="installments" data-checkout="installments"></select>
+        <select id="installments" data-checkout="installments" name="mercadopago_custom[installments]"></select>
       </div>
 
 
       <div class="mp-box-inputs mp-line">
+
         <div class="mp-box-inputs mp-col-50">
-          <!-- <button id="submit">Pay</button> -->
-          <input type="submit" value="Pay" id="submit"/>
+          <input type="submit" id="submit" value="Pay">
         </div>
+
+        <!-- NOT DELETE LOADING-->
         <div class="mp-box-inputs mp-col-25">
           <div id="mp-box-loading">
           </div>
         </div>
+
       </div>
 
       <div class="mp-box-inputs mp-col-100" id="mercadopago-utilities">
-        <input type="text" name="site_id" id="site_id" />
-        <input type="text" name="amount" id="amount" value="249.99"/>
-        <input type="text" name="paymentMethodId" id="paymentMethodId"/>
-        <input type="text" name="token" id="token"/>
+        <input type="text" id="site_id"  name="mercadopago_custom[site_id]"/>
+        <input type="text" id="amount" value="249.99" name="mercadopago_custom[amount]"/>
+        <input type="text" id="paymentMethodId" name="mercadopago_custom[paymentMethodId]"/>
+        <input type="text" id="token" name="mercadopago_custom[token]"/>
       </div>
+
     </form>
+    <!-- </div> -->
+    <!-- end #mercadopago-form -->
 
 
     <!-- Until here -->
 
-  </div>
+  </div><!-- end #mp-box-form -->
 
   <?php
   if(!isset($_REQUEST['site_id'])){
@@ -206,9 +213,7 @@ include "lib/test.php";
 
 
 
-  <?php
-  include "html_test.php";
-  ?>
+  <?php include "html_test.php"; ?>
 
 
 </body>

@@ -604,12 +604,12 @@ $posible_test = array(
 
     #instant-suit-test li{
       float: left;
-      margin: 5px 10px;
+      margin: 5px 10px !important;
       padding: 5px;
       cursor: pointer;
       background-color: #F5F5F5;
       width: 295px;
-
+      list-style: none;
     }
 
     #instant-suit-test li.separate{

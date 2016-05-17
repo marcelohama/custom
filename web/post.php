@@ -6,29 +6,31 @@ error_reporting(E_ALL);
 include "lib/mercadopago.php";
 include "lib/test.php";
 
-if($_REQUEST['paymentMethodId'] == ""){
-  $_REQUEST['paymentMethodId'] = $_REQUEST['paymentMethodIdSelector'];
+$params_mercadopago = $_REQUEST['mercadopago_custom'];
+
+if($params_mercadopago['paymentMethodId'] == ""){
+  $params_mercadopago['paymentMethodId'] = $params_mercadopago['paymentMethodIdSelector'];
 }
 
 $preference = array();
 
-$preference['token'] = $_REQUEST['token'];
-$preference['transaction_amount'] = (float) $_REQUEST['amount'];
-$preference['installments'] = (int) $_REQUEST['installments'];
-$preference['payment_method_id'] = $_REQUEST['paymentMethodId'];
+$preference['token'] = $params_mercadopago['token'];
+$preference['transaction_amount'] = (float) $params_mercadopago['amount'];
+$preference['installments'] = (int) $params_mercadopago['installments'];
+$preference['payment_method_id'] = $params_mercadopago['paymentMethodId'];
 $preference['description'] = "Example.. test";
-$preference['payer']['email'] = MercadoPagoTest::getEmailBuyerTest($_REQUEST['site_id']);
+$preference['payer']['email'] = MercadoPagoTest::getEmailBuyerTest($params_mercadopago['site_id']);
 
-if(isset($_REQUEST['issuer']) && $_REQUEST['issuer'] != "" && $_REQUEST['issuer'] > -1){
-  $preference['issuer_id'] = $_REQUEST['issuer'];
+if(isset($params_mercadopago['issuer']) && $params_mercadopago['issuer'] != "" && $params_mercadopago['issuer'] > -1){
+  $preference['issuer_id'] = $params_mercadopago['issuer'];
 }
 
-$mercadopago = new MP(MercadoPagoTest::getAccessTokenSellerTest($_REQUEST['site_id']));
+$mercadopago = new MP(MercadoPagoTest::getAccessTokenSellerTest($params_mercadopago['site_id']));
 $payment = $mercadopago->create_payment($preference);
 
 ?>
 
-<a href="index.php?site_id=<?php echo $_REQUEST['site_id']; ?>"><?php echo $_REQUEST['site_id']; ?></a>
+<a href="index.php?site_id=<?php echo $params_mercadopago['site_id']; ?>"><?php echo $params_mercadopago['site_id']; ?></a>
 
 <br/>
 <br/>

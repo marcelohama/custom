@@ -1,5 +1,5 @@
 var config_mp = {
-  debug: false,
+  debug: true,
   create_token_on_event: true,
   site_id: mercadopago_site_id,
   public_key: mercadopago_public_key,
@@ -13,7 +13,15 @@ var config_mp = {
     "docNumber"
   ],
   selectors:{
+    cardNumber: "#cardNumber",
+    installments: "#installments",
+    cardId: "#cardId",
     submit: "#submit",
+    amount: "#amount",
+    paymentMethodId: "#paymentMethodId",
+    paymentMethodIdSelector: "#paymentMethodIdSelector",
+    issuer: "#issuer",
+    token: "#token",
     box_loading: "#mp-box-loading",
     site_id: "#site_id",
     form: '#mercadopago-form',
@@ -34,24 +42,20 @@ Initialize();
 */
 
 function getBin() {
-  var cardSelector = document.querySelector("#cardId");
+  var cardSelector = document.querySelector(config_mp.selectors.cardId);
   if (cardSelector && cardSelector[cardSelector.options.selectedIndex].value != "-1") {
     return cardSelector[cardSelector.options.selectedIndex].getAttribute('first_six_digits');
   }
-  var ccNumber = document.querySelector('input[data-checkout="cardNumber"]');
+  var ccNumber = document.querySelector(config_mp.selectors.cardNumber);
   return ccNumber.value.replace(/[ .-]/g, '').slice(0, 6);
 }
 
 function clearOptions() {
   var bin = getBin();
   if (bin.length == 0) {
-    //document.querySelector("#issuer").style.display = 'none';
-    // document.querySelector("#issuer").setAttribute('disabled', 'disabled');
-    // document.querySelector("#issuer").innerHTML = "";
-    // console.log("clearOptions - hide issuer");
     hideIssuer();
 
-    var selectorInstallments = document.querySelector("#installments"),
+    var selectorInstallments = document.querySelector(config_mp.selectors.installments),
     fragment = document.createDocumentFragment(),
     option = new Option("Choose...", '-1');
 
@@ -65,7 +69,7 @@ function clearOptions() {
 function guessingPaymentMethod(event) {
 
   var bin = getBin(),
-  amount = document.querySelector('#amount').value;
+  amount = document.querySelector(config_mp.selectors.amount).value;
   if (event.type == "keyup") {
     if (bin.length == 6) {
       Mercadopago.getPaymentMethod({
@@ -85,22 +89,11 @@ function guessingPaymentMethod(event) {
 
 function setPaymentMethodInfo(status, response) {
   if (status == 200) {
-    // do somethings ex: show logo of the payment method
-    var form = document.querySelector('#pay');
 
     if(config_mp.site_id != "MLM"){
-
-      if (document.querySelector("input[name=paymentMethodId]") == null) {
-        var paymentMethod = document.createElement('input');
-        paymentMethod.setAttribute('name', "paymentMethodId");
-        paymentMethod.setAttribute('type', "hidden");
-        paymentMethod.setAttribute('value', response[0].id);
-        form.appendChild(paymentMethod);
-      } else {
-        document.querySelector("input[name=paymentMethodId]").value = response[0].id;
-      }
-
-      document.querySelector('input[data-checkout="cardNumber"]').style.background = "url(" + response[0].secure_thumbnail + ") 98% 50% no-repeat #fff";
+      //guessing
+      document.querySelector(config_mp.selectors.paymentMethodId).value = response[0].id;
+      document.querySelector(config_mp.selectors.cardNumber).style.background = "url(" + response[0].secure_thumbnail + ") 98% 50% no-repeat #fff";
     }
 
 
@@ -108,7 +101,7 @@ function setPaymentMethodInfo(status, response) {
     // check if the security code (ex: Tarshop) is required
     var cardConfiguration = response[0].settings,
     bin = getBin(),
-    amount = document.querySelector('#amount').value;
+    amount = document.querySelector(config_mp.selectors.amount).value;
 
     for (var index = 0; index < cardConfiguration.length; index++) {
       if (bin.match(cardConfiguration[index].bin.pattern) != null && cardConfiguration[index].security_code.length == 0) {
@@ -138,12 +131,8 @@ function setPaymentMethodInfo(status, response) {
     };
     if (issuerMandatory) {
       Mercadopago.getIssuers(response[0].id, showCardIssuers);
-      addEvent(document.querySelector('#issuer'), 'change', setInstallmentsByIssuerId);
+      addEvent(document.querySelector(config_mp.selectors.issuer), 'change', setInstallmentsByIssuerId);
     } else {
-      //document.querySelector("#issuer").style.display = 'none';
-      // document.querySelector("#issuer").setAttribute('disabled', 'disabled');
-      // document.querySelector("#issuer").options.length = 0;
-      // console.log("setPaymentMethodInfo - hide issuer");
       hideIssuer();
     }
   }
@@ -160,7 +149,7 @@ function setPaymentMethodInfo(status, response) {
 function showCardIssuers(status, issuers) {
   console.log("showCardIssuers - here");
 
-  var issuersSelector = document.querySelector("#issuer"),
+  var issuersSelector = document.querySelector(config_mp.selectors.issuer),
   fragment = document.createDocumentFragment();
 
   issuersSelector.options.length = 0;
@@ -177,12 +166,12 @@ function showCardIssuers(status, issuers) {
   }
   issuersSelector.appendChild(fragment);
   issuersSelector.removeAttribute('disabled');
-  //document.querySelector("#issuer").removeAttribute('style');
+  //document.querySelector(config_mp.selectors.issuer).removeAttribute('style');
 };
 
 function setInstallmentsByIssuerId(status, response) {
-  var issuerId = document.querySelector('#issuer').value,
-  amount = document.querySelector('#amount').value;
+  var issuerId = document.querySelector(config_mp.selectors.issuer).value,
+  amount = document.querySelector(config_mp.selectors.amount).value;
 
   if (issuerId === '-1') {
     return;
@@ -198,14 +187,14 @@ function setInstallmentsByIssuerId(status, response) {
 
 
 function hideIssuer(){
-
+  var $issuer = document.querySelector(config_mp.selectors.issuer);
   var opt = document.createElement('option');
   opt.value = "1";
   opt.innerHTML = "Other Bank";
 
-  document.querySelector("#issuer").innerHTML = "";
-  document.querySelector("#issuer").appendChild(opt);
-  document.querySelector("#issuer").setAttribute('disabled', 'disabled');
+  $issuer.innerHTML = "";
+  $issuer.appendChild(opt);
+  $issuer.setAttribute('disabled', 'disabled');
 }
 
 /*
@@ -216,7 +205,7 @@ function hideIssuer(){
 */
 
 function setInstallmentInfo(status, response) {
-  var selectorInstallments = document.querySelector("#installments"),
+  var selectorInstallments = document.querySelector(config_mp.selectors.installments),
   fragment = document.createDocumentFragment();
 
   selectorInstallments.options.length = 0;
@@ -245,8 +234,8 @@ function setInstallmentInfo(status, response) {
 
 function cardsHandler() {
   clearOptions();
-  var cardSelector = document.querySelector("#cardId"),
-  amount = document.querySelector('#amount').value;
+  var cardSelector = document.querySelector(config_mp.selectors.cardId),
+  amount = document.querySelector(config_mp.selectors.amount).value;
 
   if (cardSelector && cardSelector[cardSelector.options.selectedIndex].value != "-1") {
     var _bin = cardSelector[cardSelector.options.selectedIndex].getAttribute("first_six_digits");
@@ -263,7 +252,7 @@ function cardsHandler() {
 */
 
 function getPaymentMethods(){
-  var paymentMethodsSelector = document.querySelector("#paymentMethodIdSelector")
+  var paymentMethodsSelector = document.querySelector(config_mp.selectors.paymentMethodIdSelector)
 
   //set loading
   paymentMethodsSelector.style.background = "url("+config_mp.paths.loading+") 95% 50% no-repeat #fff";
@@ -352,7 +341,7 @@ function createToken(){
   hideErrors();
 
   //show loading
-  document.querySelector(config_mp.selectors.box_loading).style.background = "url("+config_mp.paths.loading+") 50% 50% no-repeat #fff";
+  document.querySelector(config_mp.selectors.box_loading).style.background = "url("+config_mp.paths.loading+") 0 50% no-repeat #fff";
 
   //form
   var $form = document.querySelector(config_mp.selectors.form);
@@ -438,9 +427,9 @@ function addEvent(el, eventName, handler){
 };
 
 
-addEvent(document.querySelector('input[data-checkout="cardNumber"]'), 'keyup', guessingPaymentMethod);
-addEvent(document.querySelector('input[data-checkout="cardNumber"]'), 'keyup', clearOptions);
-addEvent(document.querySelector('input[data-checkout="cardNumber"]'), 'change', guessingPaymentMethod);
+addEvent(document.querySelector(config_mp.selectors.cardNumber), 'keyup', guessingPaymentMethod);
+addEvent(document.querySelector(config_mp.selectors.cardNumber), 'keyup', clearOptions);
+addEvent(document.querySelector(config_mp.selectors.cardNumber), 'change', guessingPaymentMethod);
 cardsHandler();
 
 

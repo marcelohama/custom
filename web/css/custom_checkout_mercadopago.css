@@ -139,9 +139,6 @@ body{
 }
 
 
-
-
-
 /*
  *
  *
@@ -157,4 +154,6 @@ body{
    font-weight: bold;
    display: none;
    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+   clear: both;
+   float: left;
  }
