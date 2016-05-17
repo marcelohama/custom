@@ -1,6 +1,7 @@
 var config_mp = {
   debug: true,
   create_token_on_event: true,
+  create_token_on_event_and_keyup: true,
   site_id: mercadopago_site_id,
   public_key: mercadopago_public_key,
   inputs_to_create_token: [
@@ -26,6 +27,9 @@ var config_mp = {
     site_id: "#site_id",
     form: '#mercadopago-form',
     utilities_fields: "#mercadopago-utilities"
+  },
+  text: {
+    choose: "Choose"
   },
   paths:{
     loading: "images/loading.gif"
@@ -57,7 +61,7 @@ function clearOptions() {
 
     var selectorInstallments = document.querySelector(config_mp.selectors.installments),
     fragment = document.createDocumentFragment(),
-    option = new Option("Choose...", '-1');
+    option = new Option(config_mp.text.choose + "...", '-1');
 
     selectorInstallments.options.length = 0;
     fragment.appendChild(option);
@@ -153,7 +157,7 @@ function showCardIssuers(status, issuers) {
   fragment = document.createDocumentFragment();
 
   issuersSelector.options.length = 0;
-  var option = new Option("Choose...", '-1');
+  var option = new Option(config_mp.text.choose + "...", '-1');
   fragment.appendChild(option);
 
   for (var i = 0; i < issuers.length; i++) {
@@ -209,7 +213,7 @@ function setInstallmentInfo(status, response) {
 
   if (response.length > 0) {
 
-    var html_option = '<option value="-1">Choose...</option>';
+    var html_option = '<option value="-1">' + config_mp.text.choose + '...</option>';
     payerCosts = response[0].payer_costs;
 
     // fragment.appendChild(option);
@@ -261,7 +265,7 @@ function getPaymentMethods(){
 
   Mercadopago.getAllPaymentMethods(function(code, payment_methods){
     fragment = document.createDocumentFragment();
-    option = new Option("Choose...", '-1');
+    option = new Option(config_mp.text.choose + "...", '-1');
     fragment.appendChild(option);
 
 
@@ -295,14 +299,24 @@ function getPaymentMethods(){
 function createTokenByEvent(){
   for(var x = 0; x < document.querySelectorAll('[data-checkout]').length; x++){
     var element = document.querySelectorAll('[data-checkout]')[x];
-    var event = "focusout";
 
-    if(element.nodeName == "SELECT"){
-      event = "change";
+    //add events only in the required fields
+    if(config_mp.inputs_to_create_token.indexOf(element.getAttribute("data-checkout")) > -1){
+      var event = "focusout";
+
+      if(element.nodeName == "SELECT"){
+        event = "change";
+      }
+
+      //add on element data-checkout
+      addEvent(element, event, validateInputsCreateToken);
+
+      if(config_mp.create_token_on_event_and_keyup){
+        addEvent(element, "keyup", validateInputsCreateToken);
+      }
+
+
     }
-
-    //add on element data-checkout
-    addEvent(element, event, validateInputsCreateToken);
   }
 }
 
