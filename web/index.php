@@ -185,6 +185,7 @@ include "lib/test.php";
         <input type="text" id="amount" value="249.99" name="mercadopago_custom[amount]"/>
         <input type="text" id="paymentMethodId" name="mercadopago_custom[paymentMethodId]"/>
         <input type="text" id="token" name="mercadopago_custom[token]"/>
+        <input type="text" id="cardTruncated" name="mercadopago_custom[cardTruncated]"/>
       </div>
 
     </form>

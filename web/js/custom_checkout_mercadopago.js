@@ -2,6 +2,7 @@ var config_mp = {
   debug: true,
   create_token_on_event: true,
   create_token_on_event_and_keyup: true,
+  add_truncated_card: true,
   site_id: mercadopago_site_id,
   public_key: mercadopago_public_key,
   inputs_to_create_token: [
@@ -23,6 +24,7 @@ var config_mp = {
     paymentMethodIdSelector: "#paymentMethodIdSelector",
     issuer: "#issuer",
     token: "#token",
+    cardTruncated: "#cardTruncated",
     box_loading: "#mp-box-loading",
     site_id: "#site_id",
     form: '#mercadopago-form',
@@ -151,7 +153,6 @@ function setPaymentMethodInfo(status, response) {
 */
 
 function showCardIssuers(status, issuers) {
-  console.log("showCardIssuers - here");
 
   var issuersSelector = document.querySelector(config_mp.selectors.issuer),
   fragment = document.createDocumentFragment();
@@ -374,15 +375,34 @@ function sdkResponseHandler(status, response) {
   if (status != 200 && status != 201) {
     showErrors(response);
   }else{
-    var token = document.querySelector('#token');
+    var token = document.querySelector(config_mp.selectors.token);
     token.value = response.id;
-    doSubmit=true;
+
+    if(config_mp.add_truncated_card){
+      var card = truncateCard(response);
+      document.querySelector(config_mp.selectors.cardTruncated).value=card;
+    }
 
     if(!config_mp.create_token_on_event){
+      doSubmit=true;
       btn = document.querySelector(config_mp.selectors.form);
       btn.submit();
     }
   }
+}
+
+/*
+*
+*
+* useful functions
+*
+*/
+
+
+function truncateCard(response_card_token){
+  var first_six_digits = response_card_token.first_six_digits.match(/.{1,4}/g)
+  var card = first_six_digits[0] + " " + first_six_digits[1] + "** **** " + response_card_token.last_four_digits;
+  return card;
 }
 
 /*
