@@ -1,11 +1,13 @@
 var config_mp = {
   debug: true,
-  create_token_on_event: true,
-  create_token_on_event_and_keyup: true,
-  create_token_on_event_and_onchange: true,
   add_truncated_card: true,
   site_id: mercadopago_site_id,
   public_key: mercadopago_public_key,
+  create_token_on: {
+    event: true, //if true create token on event, if false create on click and ignore others events. eg: paste or keyup
+    keyup: false,
+    paste: true,
+  },
   inputs_to_create_token: [
     "cardNumber",
     "cardExpirationMonth",
@@ -313,21 +315,16 @@ function createTokenByEvent(){
 
     //add events only in the required fields
     if(config_mp.inputs_to_create_token.indexOf(element.getAttribute("data-checkout")) > -1){
-      var event = "focusout";
 
-      if(element.nodeName == "SELECT"){
-        event = "change";
-      }
+      addEvent(element, "focusout", validateInputsCreateToken);
+      addEvent(element, "change", validateInputsCreateToken);
 
-      //add on element data-checkout
-      addEvent(element, event, validateInputsCreateToken);
-
-      if(config_mp.create_token_on_event_and_keyup){
+      if(config_mp.create_token_on.keyup){
         addEvent(element, "keyup", validateInputsCreateToken);
       }
 
-      if(config_mp.create_token_on_event_and_onchange){
-        addEvent(element, "onchange", validateInputsCreateToken);
+      if(config_mp.create_token_on.paste){
+        addEvent(element, "paste", validateInputsCreateToken);
       }
 
     }
@@ -396,7 +393,7 @@ function sdkResponseHandler(status, response) {
       document.querySelector(config_mp.selectors.cardTruncated).value=card;
     }
 
-    if(!config_mp.create_token_on_event){
+    if(!config_mp.create_token_on.event){
       doSubmit=true;
       btn = document.querySelector(config_mp.selectors.form);
       btn.submit();
@@ -491,7 +488,7 @@ cardsHandler();
 
 function Initialize(){
 
-  if(config_mp.create_token_on_event){
+  if(config_mp.create_token_on.event){
     createTokenByEvent();
   }else{
     createTokenBySubmit()
