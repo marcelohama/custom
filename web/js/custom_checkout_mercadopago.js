@@ -2,6 +2,7 @@ var config_mp = {
   debug: true,
   create_token_on_event: true,
   create_token_on_event_and_keyup: true,
+  create_token_on_event_and_onchange: true,
   add_truncated_card: true,
   site_id: mercadopago_site_id,
   public_key: mercadopago_public_key,
@@ -325,6 +326,9 @@ function createTokenByEvent(){
         addEvent(element, "keyup", validateInputsCreateToken);
       }
 
+      if(config_mp.create_token_on_event_and_onchange){
+        addEvent(element, "onchange", validateInputsCreateToken);
+      }
 
     }
   }
