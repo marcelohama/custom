@@ -1,5 +1,5 @@
 var config_mp = {
-  debug: true,
+  debug: false,
   add_truncated_card: true,
   site_id: mercadopago_site_id,
   public_key: mercadopago_public_key,
