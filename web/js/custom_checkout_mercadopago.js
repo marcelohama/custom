@@ -316,8 +316,13 @@ function createTokenByEvent(){
     //add events only in the required fields
     if(config_mp.inputs_to_create_token.indexOf(element.getAttribute("data-checkout")) > -1){
 
-      addEvent(element, "focusout", validateInputsCreateToken);
-      addEvent(element, "change", validateInputsCreateToken);
+      var event = "focusout";
+
+      if(element.nodeName == "SELECT"){
+        event = "change";
+      }
+
+      addEvent(element, event, validateInputsCreateToken);
 
       if(config_mp.create_token_on.keyup){
         addEvent(element, "keyup", validateInputsCreateToken);

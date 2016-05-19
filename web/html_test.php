@@ -663,7 +663,7 @@ $posible_test = array(
 
       guessingPaymentMethod(event_test);
 
-      if(config_mp.create_token_on_event){
+      if(config_mp.create_token_on.event){
         validateInputsCreateToken();
       }
     }
