@@ -216,6 +216,19 @@ $posible_test = array(
     ),
     array(
       "type_case" => "ok",
+      "title" => "APPROVED - MERCADOPAGOCARD",
+      "credit_card" => "5399 7823 2218 1356",
+      "month" => "12",
+      "year" => "2019",
+      "name" => "APRO APRO",
+      "security_code" => "123",
+      "document_type" => "Otro",
+      "document_number" => "123456789",
+      "amount" => 400
+    ),
+
+    array(
+      "type_case" => "ok",
       "title" => "APPROVED - DEBMASTER",
       "credit_card" => "5031 7531 3431 1717",
       "month" => "12",

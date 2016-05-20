@@ -121,17 +121,17 @@ function setPaymentMethodInfo(status, response) {
     bin = getBin(),
     amount = document.querySelector(config_mp.selectors.amount).value;
 
-    for (var index = 0; index < cardConfiguration.length; index++) {
-      if (bin.match(cardConfiguration[index].bin.pattern) != null && cardConfiguration[index].security_code.length == 0) {
-        /*
-        * In this case you do not need the Security code. You can hide the input.
-        */
-      } else {
-        /*
-        * In this case you NEED the Security code. You MUST show the input.
-        */
-      }
-    }
+    // for (var index = 0; index < cardConfiguration.length; index++) {
+    //   if (bin.match(cardConfiguration[index].bin.pattern) != null && cardConfiguration[index].security_code.length == 0) {
+    //     /*
+    //     * In this case you do not need the Security code. You can hide the input.
+    //     */
+    //   } else {
+    //     /*
+    //     * In this case you NEED the Security code. You MUST show the input.
+    //     */
+    //   }
+    // }
 
     Mercadopago.getInstallments({
       "bin": bin,
@@ -147,15 +147,21 @@ function setPaymentMethodInfo(status, response) {
         issuerMandatory = true;
       }
     };
-    if (issuerMandatory) {
-      Mercadopago.getIssuers(response[0].id, showCardIssuers);
-      addEvent(document.querySelector(config_mp.selectors.issuer), 'change', setInstallmentsByIssuerId);
+    if (issuerMandatory && config_mp.site_id != "MLM") {
+      var payment_method_id = response[0].id;
+      getIssuersPaymentMethod(payment_method_id);
     } else {
       hideIssuer();
     }
   }
 };
 
+function changePaymetMethodSelector(){
+
+  var payment_method_id = document.querySelector(config_mp.selectors.paymentMethodIdSelector).value;
+  getIssuersPaymentMethod(payment_method_id);
+
+}
 
 /*
 *
@@ -164,26 +170,36 @@ function setPaymentMethodInfo(status, response) {
 *
 */
 
+function getIssuersPaymentMethod(payment_method_id){
+  Mercadopago.getIssuers(payment_method_id, showCardIssuers);
+  addEvent(document.querySelector(config_mp.selectors.issuer), 'change', setInstallmentsByIssuerId);
+}
+
 function showCardIssuers(status, issuers) {
 
-  var issuersSelector = document.querySelector(config_mp.selectors.issuer),
-  fragment = document.createDocumentFragment();
+  //if the API does not return any bank
+  if(issuers.length > 0){
+    var issuersSelector = document.querySelector(config_mp.selectors.issuer),
+    fragment = document.createDocumentFragment();
 
-  issuersSelector.options.length = 0;
-  var option = new Option(config_mp.text.choose + "...", '-1');
-  fragment.appendChild(option);
-
-  for (var i = 0; i < issuers.length; i++) {
-    if (issuers[i].name != "default") {
-      option = new Option(issuers[i].name, issuers[i].id);
-    } else {
-      option = new Option("Otro", issuers[i].id);
-    }
+    issuersSelector.options.length = 0;
+    var option = new Option(config_mp.text.choose + "...", '-1');
     fragment.appendChild(option);
+
+    for (var i = 0; i < issuers.length; i++) {
+      if (issuers[i].name != "default") {
+        option = new Option(issuers[i].name, issuers[i].id);
+      } else {
+        option = new Option("Otro", issuers[i].id);
+      }
+      fragment.appendChild(option);
+    }
+    issuersSelector.appendChild(fragment);
+    issuersSelector.removeAttribute('disabled');
+    //document.querySelector(config_mp.selectors.issuer).removeAttribute('style');
+  }else{
+    hideIssuer();
   }
-  issuersSelector.appendChild(fragment);
-  issuersSelector.removeAttribute('disabled');
-  //document.querySelector(config_mp.selectors.issuer).removeAttribute('style');
 };
 
 function setInstallmentsByIssuerId(status, response) {
@@ -206,7 +222,7 @@ function setInstallmentsByIssuerId(status, response) {
 function hideIssuer(){
   var $issuer = document.querySelector(config_mp.selectors.issuer);
   var opt = document.createElement('option');
-  opt.value = "1";
+  opt.value = "-1";
   opt.innerHTML = "Other Bank";
 
   $issuer.innerHTML = "";
@@ -514,6 +530,8 @@ function Initialize(){
     //removing not used fields for this country
     config_mp.inputs_to_create_token.splice(config_mp.inputs_to_create_token.indexOf("docType"), 1);
     config_mp.inputs_to_create_token.splice(config_mp.inputs_to_create_token.indexOf("docNumber"), 1);
+
+    addEvent(document.querySelector(config_mp.selectors.paymentMethodIdSelector), 'change', changePaymetMethodSelector);
 
     //get payment methods and populate selector
     getPaymentMethods();
