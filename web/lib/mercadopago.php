@@ -210,7 +210,7 @@ class MP {
                 "access_token" => $this->get_access_token()
             ),
             "headers" => array(
-                "X-Tracking-Id" => "platform:v1-whitelabel,type:not_defined,so:1.0.0"
+                "X-Tracking-Id" => "platform:desktop,type:not_defined,so:1.0.0"
             ),
             "data" => $preference
         );
