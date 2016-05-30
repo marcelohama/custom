@@ -68,7 +68,7 @@ include "lib/test.php";
     ?>
 
     <!-- <div id="mercadopago-form" > -->
-      <form action="post.php" method="post" id="mercadopago-form" >
+    <form action="post.php" method="post" id="mercadopago-form" >
 
       <div class="mp-box-inputs mp-line mp-paymentMethodsSelector" style="display:none;">
         <label for="paymentMethodIdSelector"><?php echo $form_labels['form']['payment_method']; ?> <em>*</em></label>
@@ -209,9 +209,12 @@ include "lib/test.php";
   var mercadopago_public_key = '<?php echo MercadoPagoTest::getPublicKeyTest($_REQUEST['site_id']); ?>';
   </script>
 
-  <script src="js/custom_checkout_mercadopago.js?no_cache=<?php echo time(); ?>"></script>
+  <!-- <script src="js/custom_checkout_mercadopago.js?no_cache=<?php echo time(); ?>"></script> -->
+  <script src="js/HFMPv1.js?no_cache=<?php echo time(); ?>"></script>
 
-
+  <script>
+    HFMPv1.Initialize(mercadopago_site_id, mercadopago_public_key);
+  </script>
 
 
   <?php include "html_test.php"; ?>
