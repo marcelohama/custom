@@ -209,7 +209,6 @@ include "lib/test.php";
   var mercadopago_public_key = '<?php echo MercadoPagoTest::getPublicKeyTest($_REQUEST['site_id']); ?>';
   </script>
 
-  <!-- <script src="js/custom_checkout_mercadopago.js?no_cache=<?php echo time(); ?>"></script> -->
   <script src="js/HFMPv1.js?no_cache=<?php echo time(); ?>"></script>
 
   <script>
