@@ -1,4 +1,7 @@
 <?php
+ini_set('display_errors',1);
+ini_set('display_startup_erros',1);
+error_reporting(E_ALL);
 
 /**
  * MercadoPago Integration Library
@@ -255,28 +258,6 @@ class MP {
         return $preference_result;
     }
 
-
-    /**
-     * Create a checkout preference
-     * @param array $preference
-     * @return array(json)
-     */
-    public function create_payment($preference) {
-        $request = array(
-            "uri" => "/v1/payments",
-            "params" => array(
-                "access_token" => $this->get_access_token()
-            ),
-            "headers" => array(
-                "X-Tracking-Id" => "platform:v1-whitelabel,type:not_defined,so:1.0.0"
-            ),
-            "data" => $preference
-        );
-
-        $payment = MPRestClient::post($request);
-        return $payment;
-    }
-
     /**
      * Create a preapproval payment
      * @param array $preapproval_payment
@@ -329,6 +310,111 @@ class MP {
 
         $preapproval_payment_result = MPRestClient::put($request);
         return $preapproval_payment_result;
+    }
+
+    /* APIs v1 */
+
+    /**
+     * Create a payment v1
+     * @param array $preference
+     * @return array(json)
+     */
+    public function create_payment($preference) {
+        $request = array(
+            "uri" => "/v1/payments",
+            "params" => array(
+                "access_token" => $this->get_access_token()
+            ),
+            "headers" => array(
+                "X-Tracking-Id" => "platform:v1-whitelabel,type:not_defined,so:1.0.0"
+            ),
+            "data" => $preference
+        );
+
+        $payment = MPRestClient::post($request);
+        return $payment;
+    }
+
+    public function search_paymentV1($id) {
+        $request = array(
+            "uri" => "/v1/payments/" . $id,
+            "params" => array(
+                "access_token" => $this->get_access_token()
+            )
+        );
+
+        $payment = MPRestClient::get($request);
+        return $payment;
+    }
+
+    public function get_or_create_customer($payer_email){
+
+      $customer = $this->search_customer($payer_email);
+
+      if($customer['status'] == 200 && $customer['response']['paging']['total'] > 0){
+        $customer = $customer['response']['results'][0];
+      }else{
+        $customer = $this->create_customer($payer_email)['response'];
+      }
+
+      return $customer;
+    }
+
+    public function create_customer($email) {
+        $request = array(
+            "uri" => "/v1/customers",
+            "params" => array(
+                "access_token" => $this->get_access_token()
+            ),
+            "data" => array(
+              "email" => $email
+            )
+        );
+
+        $customer = MPRestClient::post($request);
+        return $customer;
+    }
+
+    public function search_customer($email) {
+        $request = array(
+            "uri" => "/v1/customers/search",
+            "params" => array(
+                "access_token" => $this->get_access_token(),
+                "email" => $email
+            )
+        );
+
+        $customer = MPRestClient::get($request);
+        return $customer;
+    }
+
+    public function create_card_in_customer($customer_id, $token, $payment_method_id = null, $issuer_id = null) {
+        $request = array(
+            "uri" => "/v1/customers/" . $customer_id . "/cards",
+            "params" => array(
+                "access_token" => $this->get_access_token()
+            ),
+            "data" => array(
+              "token" => $token,
+              "issuer_id" => $issuer_id,
+              "payment_method_id" => $payment_method_id
+            )
+        );
+
+        $card = MPRestClient::post($request);
+        return $card;
+    }
+
+    public function get_all_customer_cards($customer_id, $token) {
+        $request = array(
+            "uri" => "/v1/customers/" . $customer_id . "/cards",
+            "params" => array(
+                "access_token" => $this->get_access_token()
+            )
+        );
+
+        $cards = MPRestClient::get($request);
+        return $cards;
     }
 
     /* Generic resource call methods */

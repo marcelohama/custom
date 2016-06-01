@@ -413,7 +413,7 @@ $posible_test = array(
   "MLV" => array(
     array(
       "type_case" => "ok",
-      "title" => "APPROVED - VISA",
+      "title" => "APPROVED - MASTER",
       "credit_card" => "5177076164300010",
       "month" => "12",
       "year" => "2019",
@@ -426,7 +426,7 @@ $posible_test = array(
     ,
     array(
       "type_case" => "ok",
-      "title" => "APPROVED - MASTER",
+      "title" => "APPROVED - VISA",
       "credit_card" => "4966382331109310",
       "month" => "12",
       "year" => "2019",
@@ -674,10 +674,10 @@ $posible_test = array(
         type: "keyup"
       }
 
-      HFMPv1.guessingPaymentMethod(event_test);
+      MPv1.guessingPaymentMethod(event_test);
 
-      if(HFMPv1.create_token_on.event){
-        HFMPv1.validateInputsCreateToken();
+      if(MPv1.create_token_on.event){
+        MPv1.validateInputsCreateToken();
       }
     }
 
