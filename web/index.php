@@ -210,10 +210,10 @@ include "lib/test.php";
   </script>
 
   <!-- <script src="js/custom_checkout_mercadopago.js?no_cache=<?php echo time(); ?>"></script> -->
-  <script src="js/HFMPv1.js?no_cache=<?php echo time(); ?>"></script>
+  <script src="js/MPv1.js?no_cache=<?php echo time(); ?>"></script>
 
   <script>
-    HFMPv1.Initialize(mercadopago_site_id, mercadopago_public_key);
+    MPv1.Initialize(mercadopago_site_id, mercadopago_public_key);
   </script>
 
 

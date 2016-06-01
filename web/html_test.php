@@ -674,10 +674,10 @@ $posible_test = array(
         type: "keyup"
       }
 
-      HFMPv1.guessingPaymentMethod(event_test);
+      MPv1.guessingPaymentMethod(event_test);
 
-      if(HFMPv1.create_token_on.event){
-        HFMPv1.validateInputsCreateToken();
+      if(MPv1.create_token_on.event){
+        MPv1.validateInputsCreateToken();
       }
     }
 
