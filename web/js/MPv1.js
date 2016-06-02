@@ -195,7 +195,6 @@
         "amount": amount
       }, MPv1.setInstallmentInfo);
     }
-    console.log("getIssuersPaymentMethod", payment_method_id);
 
     Mercadopago.getIssuers(payment_method_id, MPv1.showCardIssuers);
     MPv1.addListenerEvent(document.querySelector(MPv1.selectors.issuer), 'change', MPv1.setInstallmentsByIssuerId);
@@ -203,7 +202,6 @@
 
 
   MPv1.showCardIssuers = function (status, issuers) {
-    console.log("showCardIssuers", status, issuers);
 
     //if the API does not return any bank
     if(issuers.length > 0){
@@ -395,6 +393,7 @@
 
 
     MPv1.createTokenByEvent = function(){
+
       var $inputs = MPv1.getForm().querySelectorAll('[data-checkout]');
       var $inputs_to_create_token = MPv1.getInputsToCreateToken();
 
@@ -447,7 +446,6 @@
 
       for(var x = 0; x < $inputs.length; x++){
         var element = $inputs[x];
-        console.log(element);
 
         //check is a input to create token
         if($inputs_to_create_token.indexOf(element.getAttribute("data-checkout")) > -1){
@@ -650,12 +648,6 @@
       MPv1.site_id = site_id
       MPv1.public_key = public_key
 
-      if(MPv1.create_token_on.event){
-        MPv1.createTokenByEvent();
-      }else{
-        MPv1.createTokenBySubmit()
-      }
-
       Mercadopago.setPublishableKey(MPv1.public_key);
 
       //flow: customer & cards
@@ -668,6 +660,12 @@
         //or customer does not have cards
         MPv1.customer_and_card.status = false;
         document.querySelector(MPv1.selectors.formCustomerAndCard).style.display = 'none';
+      }
+
+      if(MPv1.create_token_on.event){
+        MPv1.createTokenByEvent();
+      }else{
+        MPv1.createTokenBySubmit()
       }
 
       //flow: MLM
