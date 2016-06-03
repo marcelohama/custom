@@ -397,9 +397,11 @@
       var $inputs = MPv1.getForm().querySelectorAll('[data-checkout]');
       var $inputs_to_create_token = MPv1.getInputsToCreateToken();
 
+      console.log("createTokenByEvent", $inputs_to_create_token);
+
       for(var x = 0; x < $inputs.length; x++){
         var element = $inputs[x];
-
+        console.log(element);
 
         //add events only in the required fields
         if($inputs_to_create_token.indexOf(element.getAttribute("data-checkout")) > -1){
@@ -411,6 +413,9 @@
           }
 
           MPv1.addListenerEvent(element, event, MPv1.validateInputsCreateToken);
+
+          //for firefox
+          MPv1.addListenerEvent(element, "blur", MPv1.validateInputsCreateToken);
 
           if(MPv1.create_token_on.keyup){
             MPv1.addListenerEvent(element, "keyup", MPv1.validateInputsCreateToken);
