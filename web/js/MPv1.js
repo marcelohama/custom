@@ -401,7 +401,6 @@
 
       for(var x = 0; x < $inputs.length; x++){
         var element = $inputs[x];
-        console.log(element);
 
         //add events only in the required fields
         if($inputs_to_create_token.indexOf(element.getAttribute("data-checkout")) > -1){
