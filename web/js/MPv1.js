@@ -683,6 +683,10 @@
         document.querySelector(MPv1.selectors.mpDoc).style.display = 'none';
         // document.querySelector(MPv1.selectors.mpPaymentMethodSelector).removeAttribute('style');
 
+        // I've added this trying to fix paymentMethodSelector that not appear... by mhama
+        document.querySelector(MPv1.selectors.formCustomerAndCard).removeAttribute('style');
+        document.querySelector(MPv1.selectors.mpSecurityCodeCustomerAndCard).style.display = 'none';
+
         //removing not used fields for this country
         MPv1.inputs_to_create_token.splice(MPv1.inputs_to_create_token.indexOf("docType"), 1);
         MPv1.inputs_to_create_token.splice(MPv1.inputs_to_create_token.indexOf("docNumber"), 1);

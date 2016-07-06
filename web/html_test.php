@@ -312,6 +312,104 @@ $posible_test = array(
       "amount" => 400
     )
   ),
+  "MLC" => array(
+    array(
+      "type_case" => "ok",
+      "title" => "APPROVED - VISA",
+      "credit_card" => "4168 8188 4444 7115",
+      "month" => "12",
+      "year" => "2019",
+      "name" => "APRO APRO",
+      "security_code" => "123",
+      "document_type" => "Otro",
+      "document_number" => "123456789",
+      "amount" => 5699.99
+    ),
+    array(
+      "type_case" => "ok",
+      "title" => "APPROVED - MASTER",
+      "credit_card" => "5416 7526 0258 2580",
+      "month" => "12",
+      "year" => "2019",
+      "name" => "APRO APRO",
+      "security_code" => "123",
+      "document_type" => "Otro",
+      "document_number" => "123456789",
+      "amount" => 7000
+    ),
+    array(
+      "type_case" => "error",
+      "title" => "Erro card Number",
+      "credit_card" => "124356789",
+      "month" => "12",
+      "year" => "2019",
+      "name" => "APRO APRO",
+      "security_code" => "123",
+      "document_type" => "Otro",
+      "document_number" => "123456789",
+      "amount" => 7000
+    ),
+    array(
+      "type_case" => "error",
+      "title" => "Error date expiration",
+      "credit_card" => "5416 7526 0258 2580",
+      "month" => "1",
+      "year" => "2016",
+      "name" => "APRO APRO",
+      "security_code" => "123",
+      "document_type" => "Otro",
+      "document_number" => "123456789",
+      "amount" => 7000
+    ),
+    array(
+      "type_case" => "error",
+      "title" => "Error card holder name",
+      "credit_card" => "5416752602582580",
+      "month" => "1",
+      "year" => "2019",
+      "name" => "`12321 apro",
+      "security_code" => "123",
+      "document_type" => "Otro",
+      "document_number" => "123456789",
+      "amount" => 7000
+    ),
+    array(
+      "type_case" => "error",
+      "title" => "Error security code",
+      "credit_card" => "5416 7526 0258 2580",
+      "month" => "12",
+      "year" => "2019",
+      "name" => "APRO APRO",
+      "security_code" => "1243",
+      "document_type" => "Otro",
+      "document_number" => "123456789",
+      "amount" => 7000
+    ),
+    array(
+      "type_case" => "error",
+      "title" => "Error document number",
+      "credit_card" => "5416 7526 0258 2580",
+      "month" => "12",
+      "year" => "2019",
+      "name" => "APRO APRO",
+      "security_code" => "123",
+      "document_type" => "Otro",
+      "document_number" => "123",
+      "amount" => 7000
+    ),
+    array(
+      "type_case" => "error",
+      "title" => "Error all inputs",
+      "credit_card" => "5255643634",
+      "month" => "1",
+      "year" => "2016",
+      "name" => "`12343",
+      "security_code" => "1234",
+      "document_type" => "Otro",
+      "document_number" => "123",
+      "amount" => 7000
+    )
+  ),
   "MCO" => array(
     array(
       "type_case" => "ok",
@@ -410,11 +508,109 @@ $posible_test = array(
       "amount" => 7000
     )
   ),
+  "MPE" => array(
+    array(
+      "type_case" => "ok",
+      "title" => "APPROVED - VISA",
+      "credit_card" => "4009 1753 3280 6176",
+      "month" => "12",
+      "year" => "2019",
+      "name" => "APRO APRO",
+      "security_code" => "123",
+      "document_type" => "DNI",
+      "document_number" => "22968454",
+      "amount" => 5699.99
+    ),
+    array(
+      "type_case" => "ok",
+      "title" => "APPROVED - VISA DEB",
+      "credit_card" => "4941 3371 3002 9283",
+      "month" => "12",
+      "year" => "2019",
+      "name" => "APRO APRO",
+      "security_code" => "123",
+      "document_type" => "DNI",
+      "document_number" => "22968454",
+      "amount" => 7000
+    ),
+    array(
+      "type_case" => "error",
+      "title" => "Erro card Number",
+      "credit_card" => "124356789",
+      "month" => "12",
+      "year" => "2019",
+      "name" => "APRO APRO",
+      "security_code" => "123",
+      "document_type" => "DNI",
+      "document_number" => "22968454",
+      "amount" => 7000
+    ),
+    array(
+      "type_case" => "error",
+      "title" => "Error date expiration",
+      "credit_card" => "4009 1753 3280 6176",
+      "month" => "1",
+      "year" => "2016",
+      "name" => "APRO APRO",
+      "security_code" => "123",
+      "document_type" => "DNI",
+      "document_number" => "22968454",
+      "amount" => 7000
+    ),
+    array(
+      "type_case" => "error",
+      "title" => "Error card holder name",
+      "credit_card" => "4009 1753 3280 6176",
+      "month" => "1",
+      "year" => "2019",
+      "name" => "`12321 apro",
+      "security_code" => "123",
+      "document_type" => "DNI",
+      "document_number" => "22968454",
+      "amount" => 7000
+    ),
+    array(
+      "type_case" => "error",
+      "title" => "Error security code",
+      "credit_card" => "4009 1753 3280 6176",
+      "month" => "12",
+      "year" => "2019",
+      "name" => "APRO APRO",
+      "security_code" => "1243",
+      "document_type" => "DNI",
+      "document_number" => "22968454",
+      "amount" => 7000
+    ),
+    array(
+      "type_case" => "error",
+      "title" => "Error document number",
+      "credit_card" => "4009 1753 3280 6176",
+      "month" => "12",
+      "year" => "2019",
+      "name" => "APRO APRO",
+      "security_code" => "123",
+      "document_type" => "DNI",
+      "document_number" => "123",
+      "amount" => 7000
+    ),
+    array(
+      "type_case" => "error",
+      "title" => "Error all inputs",
+      "credit_card" => "5255643634",
+      "month" => "1",
+      "year" => "2016",
+      "name" => "`12343",
+      "security_code" => "1234",
+      "document_type" => "Otro",
+      "document_number" => "123",
+      "amount" => 7000
+    )
+  ),
   "MLV" => array(
     array(
       "type_case" => "ok",
       "title" => "APPROVED - MASTER",
-      "credit_card" => "5177076164300010",
+      "credit_card" => "5177 0761 6430 0010",
       "month" => "12",
       "year" => "2019",
       "name" => "APRO APRO",
@@ -427,7 +623,7 @@ $posible_test = array(
     array(
       "type_case" => "ok",
       "title" => "APPROVED - VISA",
-      "credit_card" => "4966382331109310",
+      "credit_card" => "4966 3823 3110 9310",
       "month" => "12",
       "year" => "2019",
       "name" => "APRO APRO",
@@ -516,9 +712,10 @@ $posible_test = array(
 <ul id="countrys">
   <li><a href="?site_id=MLA"> Argentina - MLA</a></li>
   <li><a href="?site_id=MLB"> Brasil - MLB</a></li>
-  <!-- <li><a href="?site_id=MLC"> Chile - MLC</a></li> -->
+  <li><a href="?site_id=MLC"> Chile - MLC</a></li>
   <li><a href="?site_id=MCO"> Colombia - MCO</a></li>
   <li><a href="?site_id=MLM"> Mexico - MLM</a></li>
+  <li><a href="?site_id=MPE"> Peru - MPE</a></li>
   <li><a href="?site_id=MLV"> Venezuela - MLV</a></li>
 </ul>
 
