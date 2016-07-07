@@ -236,7 +236,7 @@ $customer = $mercadopago->get_or_create_customer($payer_email);
 
         <div class="mp-box-inputs mp-col-100" id="mercadopago-utilities">
           <input type="text" id="site_id"  name="mercadopago_custom[site_id]"/>
-          <input type="text" id="amount" value="249.99" name="mercadopago_custom[amount]"/>
+          <input type="text" id="amount" value="5249.99" name="mercadopago_custom[amount]"/>
           <input type="text" id="paymentMethodId" name="mercadopago_custom[paymentMethodId]"/>
           <input type="text" id="token" name="mercadopago_custom[token]"/>
           <input type="text" id="cardTruncated" name="mercadopago_custom[cardTruncated]"/>

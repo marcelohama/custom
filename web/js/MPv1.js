@@ -683,9 +683,7 @@
         document.querySelector(MPv1.selectors.mpDoc).style.display = 'none';
         // document.querySelector(MPv1.selectors.mpPaymentMethodSelector).removeAttribute('style');
 
-        // I've added this trying to fix paymentMethodSelector that not appear... by mhama
         document.querySelector(MPv1.selectors.formCustomerAndCard).removeAttribute('style');
-        document.querySelector(MPv1.selectors.mpSecurityCodeCustomerAndCard).style.display = 'none';
 
         //removing not used fields for this country
         MPv1.inputs_to_create_token.splice(MPv1.inputs_to_create_token.indexOf("docType"), 1);
@@ -698,7 +696,7 @@
       }
 
       //flow: MLB AND MCO
-      if(MPv1.site_id == "MLB"){
+      if (MPv1.site_id == "MLB") {
 
         document.querySelector(MPv1.selectors.mpDocType).style.display = 'none';
         document.querySelector(MPv1.selectors.mpIssuer).style.display = 'none';
@@ -706,11 +704,11 @@
         document.querySelector(MPv1.selectors.docNumber).classList.remove("mp-col-75");
         document.querySelector(MPv1.selectors.docNumber).classList.add("mp-col-100");
 
-      }else if (MPv1.site_id == "MCO") {
+      } else if (MPv1.site_id == "MCO") {
         document.querySelector(MPv1.selectors.mpIssuer).style.display = 'none';
       }
 
-      if(MPv1.debug){
+      if (MPv1.debug) {
         document.querySelector(MPv1.selectors.utilities_fields).style.display = 'inline-block';
         console.log(MPv1);
       }

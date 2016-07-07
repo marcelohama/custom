@@ -5,12 +5,12 @@ class MercadoPagoTest {
 
   static function getPublicKeyTest($site_id){
     $public_keys = array(
-      "MLA" => "TEST-3a0f5da2-c8e4-41c0-901e-338f01f58e2c",
-      "MLB" => "TEST-30abef69-9f1e-4e9c-8902-62a5c941ba8e",
-      "MLM" => "TEST-fda12e26-c017-440d-8bd5-9537b36076bc",
-      "MCO" => "TEST-cd1e674d-7ada-4eab-aa0f-97901cd85de6",
-      "MLC" => "TEST-1e7e15ea-b95c-4c18-9b71-a2e33c4d974c",
-      "MLV" => "TEST-42e8bb0b-4440-416f-9534-8404649136ae",
+      "MLA" => "TEST-688247aa-6fbc-4d8d-8d6c-d58a077f2a8a",
+      "MLB" => "TEST-c7058257-126f-4b3f-aaee-f6217ac0377f",
+      "MLM" => "TEST-78e4533c-4b10-45f4-900f-e4c7195c9f74",
+      "MCO" => "TEST-e92d52e4-804c-4390-9ec8-e0cfac38919e",
+      "MLC" => "TEST-a547c43e-d03f-4e02-9cfd-705b7890ebe0",
+      "MLV" => "TEST-ab2ff380-656c-42d8-8b08-4c13629c25ee",
       "MPE" => "TEST-bef28df6-2c17-4855-b762-81afc98f1693"
     );
 
@@ -19,12 +19,12 @@ class MercadoPagoTest {
 
   static function getAccessTokenSellerTest($site_id){
     $access_tokens = array(
-      "MLA" => "TEST-5065100305679755-012611-36d05dd89010a4e897c93ccacba22886__LA_LC__-201657914",
-      "MLB" => "TEST-5575956555775329-032209-45a4c2384bd02f7606375af29c0b0ebd__LC_LD__-209264106",
-      "MLM" => "TEST-8125048893657995-012611-971865e2db51654ac76a28b66ff6e174__LC_LD__-201658709",
-      "MCO" => "TEST-8926119823541847-022316-89a07f0dbaeb094a9ebeb0741f364cb7__LA_LD__-201658731",
-      "MLC" => "TEST-4301459443670481-022409-500160028f3e305c59f42c4e0e918629__LA_LC__-206913132",
-      "MLV" => "TEST-5168834635263799-022312-943336e39e1b654ed455ecf1fa01cc26__LA_LD__-201655393",
+      "MLA" => "TEST-5249833162698191-020413-831f3b52f3922cb013847f9e02829d69__LC_LD__-204620652",
+      "MLB" => "TEST-2367506043397408-051212-70f86162c12c25c5d44e186b9351a07a__LB_LA__-210968992",
+      "MLM" => "TEST-2039333317737006-022418-4d6c34cdf796deca2c8d063c88b3994d__LD_LA__-204638312",
+      "MCO" => "TEST-1250090532419011-030814-b92c934d7664f865867f741f0a02117a__LA_LD__-204634828",
+      "MLC" => "TEST-1812366329262902-030813-09adc281362b0caf821fc184a2a9cc36__LC_LB__-204638499",
+      "MLV" => "TEST-6091109766046547-021209-091cd1352c93079d85e6ae9310ec2945__LB_LC__-204636658",
       "MPE" => "TEST-615948908823631-060918-5f10fe100d903ba929887b796ebaef39__LD_LC__-216731142"
     );
     return $access_tokens[$site_id];
@@ -32,13 +32,13 @@ class MercadoPagoTest {
 
   static function getEmailBuyerTest($site_id){
     $emails_test = array(
-      "MLA" => "test_user_40522467@testuser.com",
-      "MLB" => "test_user_75091695@testuser.com",
+      "MLA" => "test_user_26738664@testuser.com",
+      "MLB" => "test_user_42014680@testuser.com",
       "MLM" => "test_user_54673885@testuser.com",
-      "MCO" => "test_user_44237579@testuser.com",
-      "MLC" => "test_user_87174229@testuser.com",
-      "MLV" => "test_user_38279382@testuser.com",
-      "MPE" => "test_user_98295874@testuser.com"
+      "MCO" => "test_user_72291478@testuser.com",
+      "MLC" => "test_user_95201263@testuser.com",
+      "MLV" => "test_user_6407898@testuser.com",
+      "MPE" => "test_user_3401908@testuser.com"
     );
 
     return $emails_test[$site_id];

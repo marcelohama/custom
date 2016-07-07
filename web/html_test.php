@@ -309,7 +309,7 @@ $posible_test = array(
       "security_code" => "1234",
       "document_type" => "Otro",
       "document_number" => "123456789",
-      "amount" => 400
+      "amount" => 1000
     )
   ),
   "MLC" => array(
@@ -323,7 +323,7 @@ $posible_test = array(
       "security_code" => "123",
       "document_type" => "Otro",
       "document_number" => "123456789",
-      "amount" => 5699.99
+      "amount" => 7000
     ),
     array(
       "type_case" => "ok",
@@ -421,7 +421,7 @@ $posible_test = array(
       "security_code" => "123",
       "document_type" => "CC",
       "document_number" => "123456789",
-      "amount" => 5699.99
+      "amount" => 56990.99
     ),
     array(
       "type_case" => "ok",
@@ -433,7 +433,7 @@ $posible_test = array(
       "security_code" => "123",
       "document_type" => "CC",
       "document_number" => "123456789",
-      "amount" => 7000
+      "amount" => 70000
     ),
     array(
       "type_case" => "error",
@@ -601,7 +601,7 @@ $posible_test = array(
       "year" => "2016",
       "name" => "`12343",
       "security_code" => "1234",
-      "document_type" => "Otro",
+      "document_type" => "DNI",
       "document_number" => "123",
       "amount" => 7000
     )
