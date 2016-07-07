@@ -417,6 +417,20 @@ class MP {
         return $cards;
     }
 
+    public function check_discount_campaigns($transaction_amount, $payer_email, $coupon_code) {
+        $request = array(
+            "uri" => "/discount_campaigns",
+            "params" => array(
+                "access_token" => $this->get_access_token(),
+                "payer_email" => $payer_email,
+                "coupon_code" => $coupon_code
+            )
+        );
+
+        $discount_info = MPRestClient::get($request);
+        return $discount_info;
+    }
+
     /* Generic resource call methods */
 
     /**

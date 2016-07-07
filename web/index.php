@@ -12,6 +12,7 @@ if(!isset($_REQUEST['site_id'])){
 $payer_email = MercadoPagoTest::getEmailBuyerTest($_REQUEST['site_id']);
 $mercadopago = new MP(MercadoPagoTest::getAccessTokenSellerTest($_REQUEST['site_id']));
 $customer = $mercadopago->get_or_create_customer($payer_email);
+$has_coupon = true;
 
 ?>
 
@@ -31,6 +32,7 @@ $customer = $mercadopago->get_or_create_customer($payer_email);
 
     $form_labels = array(
       "form" => array(
+        "coupon_of_discounts" => "Coupon of Discounts",
         "payment_method" => "Payment Method",
         "credit_card_number" => "Credit card number",
         "expiration_month" => "Expiration month",
@@ -77,14 +79,35 @@ $customer = $mercadopago->get_or_create_customer($payer_email);
         "213" => "The parameter cardholder.document.subtype can not be null or empty",
         "323" => "Invalid Document Sub Type",
         //issuer
-        "220" => "Parameter cardIssuerId can not be null/empty"
+        "220" => "Parameter cardIssuerId can not be null/empty",
+        //coupon
+        "400" => "TO-DO",
+        "404" => "TO-DO"
       )
     );
     ?>
 
+	  <?php if ( $has_coupon ) { ?>
+      <form action="coupon_post.php" method="post">
+      <div class="mp-box-inputs mp-line" id="mercadopago-form-coupon">
+        <label for="paymentMethodIdSelector"><?php echo $form_labels['form']['coupon_of_discounts']; ?></label>
+  	    <div class="mp-box-inputs mp-col-65">
+          <input type="text" id="couponCode" data-checkout="coupon_code" name="mercadopago_custom[coupon_code]" autocomplete="off" maxlength="10"/>
+
+          <!--<span class="mp-error" id="mp-error-221" data-main="#cardholderName"> <?php echo $form_labels['error']['400']; ?> </span>
+          <span class="mp-error" id="mp-error-316" data-main="#cardholderName"> <?php echo $form_labels['error']['404']; ?> </span>-->
+  	    </div>
+        <div class="mp-box-inputs mp-col-10">
+          <div id="mp-separete-date"></div>
+        </div>
+        <div class="mp-box-inputs mp-col-25">
+          <input type="submit" id="submit" value="Apply">
+        </div>
+      </div>
+	  <?php } ?>
+	  
     <!-- <div id="mercadopago-form" > -->
     <form action="post.php" method="post">
-
 
       <div id="mercadopago-form-customer-and-card">
 

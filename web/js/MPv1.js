@@ -8,6 +8,10 @@
     add_truncated_card: true,
     site_id: '',
     public_key: '',
+    coupon_of_discounts: {
+      default: true,
+      status: true
+    },
     customer_and_card: {
       default: true,
       status: true
@@ -17,6 +21,11 @@
       keyup: false,
       paste: true,
     },
+
+    inputs_to_create_discount: [
+      "couponCode"
+    ],
+
     inputs_to_create_token: [
       "cardNumber",
       "cardExpirationMonth",
@@ -33,6 +42,8 @@
     ],
 
     selectors:{
+
+      couponCode: "#couponCode",
 
       paymentMethodSelector: "#paymentMethodSelector",
       pmCustomerAndCards: "#payment-methods-for-customer-and-cards",
@@ -65,6 +76,7 @@
       box_loading: "#mp-box-loading",
       submit: "#submit",
       form: '#mercadopago-form',
+      formCoupon: '#mercadopago-form-coupon',
       formCustomerAndCard: '#mercadopago-form-customer-and-card',
       utilities_fields: "#mercadopago-utilities"
     },
@@ -75,6 +87,10 @@
     paths:{
       loading: "images/loading.gif"
     }
+  }
+
+  MPv1.checkCouponEligibility = function () {
+
   }
 
   MPv1.getBin = function () {
