@@ -12,7 +12,6 @@ if(!isset($_REQUEST['site_id'])){
 $payer_email = MercadoPagoTest::getEmailBuyerTest($_REQUEST['site_id']);
 $mercadopago = new MP(MercadoPagoTest::getAccessTokenSellerTest($_REQUEST['site_id']));
 $customer = $mercadopago->get_or_create_customer($payer_email);
-$has_coupon = true;
 
 ?>
 
@@ -80,31 +79,31 @@ $has_coupon = true;
         "323" => "Invalid Document Sub Type",
         //issuer
         "220" => "Parameter cardIssuerId can not be null/empty",
-        //coupon
-        "400" => "TO-DO",
-        "404" => "TO-DO"
+      ),
+      "coupon_error" => array(
+        "EMPTY" => "Please, inform your coupon code",
+        "400" => "Coupon not eligible to discounts",
+        "404" => "There is a problem with your coupon"
       )
     );
     ?>
 
-	  <?php if ( $has_coupon ) { ?>
-      <form action="coupon_post.php" method="post">
-      <div class="mp-box-inputs mp-line" id="mercadopago-form-coupon">
-        <label for="paymentMethodIdSelector"><?php echo $form_labels['form']['coupon_of_discounts']; ?></label>
-  	    <div class="mp-box-inputs mp-col-65">
-          <input type="text" id="couponCode" data-checkout="coupon_code" name="mercadopago_custom[coupon_code]" autocomplete="off" maxlength="10"/>
+    <div class="mp-box-inputs mp-line" id="mercadopago-form-coupon">
+      <label for="couponCodeLabel"><?php echo $form_labels['form']['coupon_of_discounts']; ?></label>
+      <div class="mp-box-inputs mp-col-65">
+        <input type="text" id="couponCode" data-checkout="coupon_code" name="mercadopago_custom[coupon_code]" autocomplete="off" maxlength="24"/>
 
+          <span class="mp-error" id="mpCouponEmpty" > <?php echo $form_labels['coupon_error']['EMPTY']; ?> </span>
           <!--<span class="mp-error" id="mp-error-221" data-main="#cardholderName"> <?php echo $form_labels['error']['400']; ?> </span>
-          <span class="mp-error" id="mp-error-316" data-main="#cardholderName"> <?php echo $form_labels['error']['404']; ?> </span>-->
-  	    </div>
-        <div class="mp-box-inputs mp-col-10">
-          <div id="mp-separete-date"></div>
+          <span class="mp-error" id="mp-error-404" data-main="#cardholderName"> <?php echo $form_labels['error']['404']; ?> </span>-->
         </div>
-        <div class="mp-box-inputs mp-col-25">
-          <input type="submit" id="submit" value="Apply">
-        </div>
+      <div class="mp-box-inputs mp-col-10">
+        <div id="mp-separete-date"></div>
       </div>
-	  <?php } ?>
+      <div class="mp-box-inputs mp-col-25">
+        <input type="submit" id="applyCoupon" value="Apply">
+      </div>
+    </div>
 	  
     <!-- <div id="mercadopago-form" > -->
     <form action="post.php" method="post">
@@ -282,7 +281,8 @@ $has_coupon = true;
     <script>
     var mercadopago_site_id = '<?php echo $_REQUEST['site_id']; ?>';
     var mercadopago_public_key = '<?php echo MercadoPagoTest::getPublicKeyTest($_REQUEST['site_id']); ?>';
-    MPv1.Initialize(mercadopago_site_id, mercadopago_public_key);
+    var mercadopago_payer_email = '<?php echo $payer_email; ?>';
+    MPv1.Initialize(mercadopago_site_id, mercadopago_public_key, mercadopago_payer_email);
     </script>
 
 

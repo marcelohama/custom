@@ -422,6 +422,7 @@ class MP {
             "uri" => "/discount_campaigns",
             "params" => array(
                 "access_token" => $this->get_access_token(),
+                "transaction_amount" => $transaction_amount,
                 "payer_email" => $payer_email,
                 "coupon_code" => $coupon_code
             )
