@@ -91,7 +91,7 @@ $customer = $mercadopago->get_or_create_customer($payer_email);
     <div class="mp-box-inputs mp-line" id="mercadopago-form-coupon">
       <label for="couponCodeLabel"><?php echo $form_labels['form']['coupon_of_discounts']; ?></label>
       <div class="mp-box-inputs mp-col-65">
-        <input type="text" id="couponCode" data-checkout="coupon_code" name="mercadopago_custom[coupon_code]" autocomplete="off" maxlength="24"/>
+        <input type="text" id="couponCode" data-checkout="coupon_code" name="mercadopago_custom[coupon_code]" autocomplete="off" maxlength="24" value="couponcode"/>
 
           <span class="mp-error" id="mpCouponEmpty" > <?php echo $form_labels['coupon_error']['EMPTY']; ?> </span>
           <!--<span class="mp-error" id="mp-error-221" data-main="#cardholderName"> <?php echo $form_labels['error']['400']; ?> </span>
@@ -101,7 +101,7 @@ $customer = $mercadopago->get_or_create_customer($payer_email);
         <div id="mp-separete-date"></div>
       </div>
       <div class="mp-box-inputs mp-col-25">
-        <input type="submit" id="applyCoupon" value="Apply">
+        <input type="button" id="applyCoupon" value="Apply" >
       </div>
     </div>
 	  
@@ -281,8 +281,7 @@ $customer = $mercadopago->get_or_create_customer($payer_email);
     <script>
     var mercadopago_site_id = '<?php echo $_REQUEST['site_id']; ?>';
     var mercadopago_public_key = '<?php echo MercadoPagoTest::getPublicKeyTest($_REQUEST['site_id']); ?>';
-    var mercadopago_payer_email = '<?php echo $payer_email; ?>';
-    MPv1.Initialize(mercadopago_site_id, mercadopago_public_key, mercadopago_payer_email);
+    MPv1.Initialize(mercadopago_site_id, mercadopago_public_key, 'discount.php');
     </script>
 
 

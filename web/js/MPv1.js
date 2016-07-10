@@ -8,7 +8,7 @@
     add_truncated_card: true,
     site_id: '',
     public_key: '',
-    payer_email: '',
+    discount_action_url: '',
     coupon_of_discounts: {
       default: true,
       status: true
@@ -97,45 +97,32 @@
   MPv1.checkCouponEligibility = function () {
     if ( document.querySelector(MPv1.selectors.couponCode).value != "" ) {
       document.querySelector(MPv1.selectors.mpCouponEmpty).style.display = 'none';
-
       /*alert(
         "\nTransaction Amount: " + document.querySelector(MPv1.selectors.amount).value +
         "\Payer email: " + MPv1.payer_email +
         "\nCoupon code: " + document.querySelector(MPv1.selectors.couponCode).value
       );*/
-      var parametros = null;
-      var discount_action_url = "discount.php";
-      if (discount_action_url.indexOf("?") >= 0) {
-        parametros = "&coupon_id=";
-      } else {
-        parametros = "?coupon_id=";
-      }
-      $.ajax({
-        type : "GET",
-        url : discount_action_url + parametros + document.querySelector(MPv1.selectors.couponCode).value,
-        success : function(r) {
-          if (r.status == 200) {
+      var request = new XMLHttpRequest();
+      request.open(
+        'GET',
+        MPv1.discount_action_url + "?coupon_id=" + document.querySelector(MPv1.selectors.couponCode).value,
+        true
+      );
+      request.onreadystatechange = function() {
+        if (request.readyState == 4) { 
+          if (request.status == 200) {
+            //request succeed
+            alert('Stt 200 / Response is ' + request.responseText);
           } else {
+            //request failed
+            alert('Stt 400 / Response is ' + request.responseText);
           }
-        },
-        error : function() {
-        },
-        complete : function() {
         }
-      })
+      };
+      request.send(null)
     } else {
       document.querySelector(MPv1.selectors.mpCouponEmpty).style.display = 'block';
     }
-
-    //$params_mercadopago = $_REQUEST['mercadopago_custom'];
-    //$payer_email = MercadoPagoTest::getEmailBuyerTest($params_mercadopago['site_id']);
-
-    
-
-
-    //$params_mercadopago['amount'], JSON_PRETTY_PRINT );
-    //echo json_encode( $payer_email, JSON_PRETTY_PRINT );
-    //echo json_encode( $params_mercadopago['coupon_code'], JSON_PRETTY_PRINT );
   }
 
   MPv1.getBin = function () {
@@ -707,12 +694,12 @@
     *
     */
 
-    MPv1.Initialize = function(site_id, public_key, payer_email){
+    MPv1.Initialize = function(site_id, public_key, discount_action_url){
 
       //sets
       MPv1.site_id = site_id
       MPv1.public_key = public_key
-      MPv1.payer_email = payer_email
+      MPv1.discount_action_url = discount_action_url
 
       Mercadopago.setPublishableKey(MPv1.public_key);
 
