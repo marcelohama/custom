@@ -25,8 +25,7 @@
 
     inputs_to_create_discount: [
       "couponCode",
-      "applyCoupon",
-      "mpCouponEmpty"
+      "applyCoupon"
     ],
 
     inputs_to_create_token: [
@@ -49,6 +48,8 @@
       couponCode: "#couponCode",
       applyCoupon: "#applyCoupon",
       mpCouponEmpty: "#mpCouponEmpty",
+      mpCoupon400: "#mpCoupon400",
+      mpCoupon404: "#mpCoupon404",
 
       paymentMethodSelector: "#paymentMethodSelector",
       pmCustomerAndCards: "#payment-methods-for-customer-and-cards",
@@ -97,6 +98,12 @@
   MPv1.checkCouponEligibility = function () {
     if ( document.querySelector(MPv1.selectors.couponCode).value != "" ) {
       document.querySelector(MPv1.selectors.mpCouponEmpty).style.display = 'none';
+      document.querySelector(MPv1.selectors.mpCoupon400).style.display = 'none';
+      document.querySelector(MPv1.selectors.mpCoupon404).style.display = 'none';
+
+      // set loading
+      document.querySelector(MPv1.selectors.couponCode).style.background = "url("+MPv1.paths.loading+") 98% 50% no-repeat #fff";
+
       /*alert(
         "\nTransaction Amount: " + document.querySelector(MPv1.selectors.amount).value +
         "\Payer email: " + MPv1.payer_email +
@@ -109,17 +116,26 @@
         true
       );
       request.onreadystatechange = function() {
-        if (request.readyState == 4) { 
+        if (request.readyState == 4) {
           if (request.status == 200) {
-            //request succeed
-            alert('Stt 200 / Response is ' + request.responseText);
+            var response = JSON.parse(request.responseText);
+            if (response.status == 200) {
+              alert('Stt 200');
+            } else if (response.status == 400) {
+              document.querySelector(MPv1.selectors.mpCoupon400).innerHTML = response.response.message;
+              document.querySelector(MPv1.selectors.mpCoupon400).style.display = 'block';
+            } else if (response.status == 404) {
+              document.querySelector(MPv1.selectors.mpCoupon404).innerHTML = response.response.message;
+              document.querySelector(MPv1.selectors.mpCoupon404).style.display = 'block';
+            }
           } else {
             //request failed
             alert('Stt 400 / Response is ' + request.responseText);
           }
+          document.querySelector(MPv1.selectors.couponCode).style.background = null;
         }
       };
-      request.send(null)
+      request.send(null);
     } else {
       document.querySelector(MPv1.selectors.mpCouponEmpty).style.display = 'block';
     }

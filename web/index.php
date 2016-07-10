@@ -31,7 +31,7 @@ $customer = $mercadopago->get_or_create_customer($payer_email);
 
     $form_labels = array(
       "form" => array(
-        "coupon_of_discounts" => "Coupon of Discounts",
+        "coupon_of_discounts" => "Coupon of Discount",
         "payment_method" => "Payment Method",
         "credit_card_number" => "Credit card number",
         "expiration_month" => "Expiration month",
@@ -81,9 +81,7 @@ $customer = $mercadopago->get_or_create_customer($payer_email);
         "220" => "Parameter cardIssuerId can not be null/empty",
       ),
       "coupon_error" => array(
-        "EMPTY" => "Please, inform your coupon code",
-        "400" => "Coupon not eligible to discounts",
-        "404" => "There is a problem with your coupon"
+        "EMPTY" => "Please, inform your coupon code"
       )
     );
     ?>
@@ -92,11 +90,10 @@ $customer = $mercadopago->get_or_create_customer($payer_email);
       <label for="couponCodeLabel"><?php echo $form_labels['form']['coupon_of_discounts']; ?></label>
       <div class="mp-box-inputs mp-col-65">
         <input type="text" id="couponCode" data-checkout="coupon_code" name="mercadopago_custom[coupon_code]" autocomplete="off" maxlength="24" value="couponcode"/>
-
-          <span class="mp-error" id="mpCouponEmpty" > <?php echo $form_labels['coupon_error']['EMPTY']; ?> </span>
-          <!--<span class="mp-error" id="mp-error-221" data-main="#cardholderName"> <?php echo $form_labels['error']['400']; ?> </span>
-          <span class="mp-error" id="mp-error-404" data-main="#cardholderName"> <?php echo $form_labels['error']['404']; ?> </span>-->
-        </div>
+        <span class="mp-error" id="mpCouponEmpty" > <?php echo $form_labels['coupon_error']['EMPTY']; ?> </span>
+        <span class="mp-error" id="mpCoupon400" ></span>
+        <span class="mp-error" id="mpCoupon404" ></span>
+      </div>
       <div class="mp-box-inputs mp-col-10">
         <div id="mp-separete-date"></div>
       </div>
