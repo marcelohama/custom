@@ -278,7 +278,7 @@ $customer = $mercadopago->get_or_create_customer($payer_email);
     <script>
     var mercadopago_site_id = '<?php echo $_REQUEST['site_id']; ?>';
     var mercadopago_public_key = '<?php echo MercadoPagoTest::getPublicKeyTest($_REQUEST['site_id']); ?>';
-    MPv1.Initialize(mercadopago_site_id, mercadopago_public_key, 'discount.php');
+    MPv1.Initialize(mercadopago_site_id, mercadopago_public_key, true, 'discount.php');
     </script>
 
 

@@ -8,9 +8,9 @@
     add_truncated_card: true,
     site_id: '',
     public_key: '',
-    discount_action_url: '',
     coupon_of_discounts: {
-      default: true,
+      discount_action_url: '',
+      default: false,
       status: true
     },
     customer_and_card: {
@@ -112,7 +112,7 @@
       var request = new XMLHttpRequest();
       request.open(
         'GET',
-        MPv1.discount_action_url + "?coupon_id=" + document.querySelector(MPv1.selectors.couponCode).value,
+        MPv1.coupon_of_discounts.discount_action_url + "?coupon_id=" + document.querySelector(MPv1.selectors.couponCode).value,
         true
       );
       request.onreadystatechange = function() {
@@ -141,6 +141,9 @@
       document.querySelector(MPv1.selectors.mpCoupon400).style.display = 'none';
       document.querySelector(MPv1.selectors.mpCoupon404).style.display = 'none';
     }
+  }
+
+  MPv1.applyCoupon = function () {
   }
 
   MPv1.getBin = function () {
@@ -712,12 +715,13 @@
     *
     */
 
-    MPv1.Initialize = function(site_id, public_key, discount_action_url){
+    MPv1.Initialize = function(site_id, public_key, coupon_mode, discount_action_url){
 
       //sets
       MPv1.site_id = site_id
       MPv1.public_key = public_key
-      MPv1.discount_action_url = discount_action_url
+      MPv1.coupon_of_discounts.default = coupon_mode
+      MPv1.coupon_of_discounts.discount_action_url = discount_action_url
 
       Mercadopago.setPublishableKey(MPv1.public_key);
 
