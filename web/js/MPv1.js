@@ -138,6 +138,8 @@
       request.send(null);
     } else {
       document.querySelector(MPv1.selectors.mpCouponEmpty).style.display = 'block';
+      document.querySelector(MPv1.selectors.mpCoupon400).style.display = 'none';
+      document.querySelector(MPv1.selectors.mpCoupon404).style.display = 'none';
     }
   }
 
