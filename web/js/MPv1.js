@@ -8,6 +8,11 @@
     add_truncated_card: true,
     site_id: '',
     public_key: '',
+    coupon_of_discounts: {
+      discount_action_url: '',
+      default: false,
+      status: true
+    },
     customer_and_card: {
       default: true,
       status: true
@@ -17,6 +22,12 @@
       keyup: false,
       paste: true,
     },
+
+    inputs_to_create_discount: [
+      "couponCode",
+      "applyCoupon"
+    ],
+
     inputs_to_create_token: [
       "cardNumber",
       "cardExpirationMonth",
@@ -33,6 +44,12 @@
     ],
 
     selectors:{
+
+      couponCode: "#couponCode",
+      applyCoupon: "#applyCoupon",
+      mpCouponEmpty: "#mpCouponEmpty",
+      mpCoupon400: "#mpCoupon400",
+      mpCoupon404: "#mpCoupon404",
 
       paymentMethodSelector: "#paymentMethodSelector",
       pmCustomerAndCards: "#payment-methods-for-customer-and-cards",
@@ -65,6 +82,7 @@
       box_loading: "#mp-box-loading",
       submit: "#submit",
       form: '#mercadopago-form',
+      formCoupon: '#mercadopago-form-coupon',
       formCustomerAndCard: '#mercadopago-form-customer-and-card',
       utilities_fields: "#mercadopago-utilities"
     },
@@ -75,6 +93,57 @@
     paths:{
       loading: "images/loading.gif"
     }
+  }
+
+  MPv1.checkCouponEligibility = function () {
+    if ( document.querySelector(MPv1.selectors.couponCode).value != "" ) {
+      document.querySelector(MPv1.selectors.mpCouponEmpty).style.display = 'none';
+      document.querySelector(MPv1.selectors.mpCoupon400).style.display = 'none';
+      document.querySelector(MPv1.selectors.mpCoupon404).style.display = 'none';
+
+      // set loading
+      document.querySelector(MPv1.selectors.couponCode).style.background = "url("+MPv1.paths.loading+") 98% 50% no-repeat #fff";
+
+      /*alert(
+        "\nTransaction Amount: " + document.querySelector(MPv1.selectors.amount).value +
+        "\Payer email: " + MPv1.payer_email +
+        "\nCoupon code: " + document.querySelector(MPv1.selectors.couponCode).value
+      );*/
+      var request = new XMLHttpRequest();
+      request.open(
+        'GET',
+        MPv1.coupon_of_discounts.discount_action_url + "?coupon_id=" + document.querySelector(MPv1.selectors.couponCode).value,
+        true
+      );
+      request.onreadystatechange = function() {
+        if (request.readyState == 4) {
+          if (request.status == 200) {
+            var response = JSON.parse(request.responseText);
+            if (response.status == 200) {
+              alert('Stt 200');
+            } else if (response.status == 400) {
+              document.querySelector(MPv1.selectors.mpCoupon400).innerHTML = response.response.message;
+              document.querySelector(MPv1.selectors.mpCoupon400).style.display = 'block';
+            } else if (response.status == 404) {
+              document.querySelector(MPv1.selectors.mpCoupon404).innerHTML = response.response.message;
+              document.querySelector(MPv1.selectors.mpCoupon404).style.display = 'block';
+            }
+          } else {
+            //request failed
+            alert('Stt 400 / Response is ' + request.responseText);
+          }
+          document.querySelector(MPv1.selectors.couponCode).style.background = null;
+        }
+      };
+      request.send(null);
+    } else {
+      document.querySelector(MPv1.selectors.mpCouponEmpty).style.display = 'block';
+      document.querySelector(MPv1.selectors.mpCoupon400).style.display = 'none';
+      document.querySelector(MPv1.selectors.mpCoupon404).style.display = 'none';
+    }
+  }
+
+  MPv1.applyCoupon = function () {
   }
 
   MPv1.getBin = function () {
@@ -646,13 +715,22 @@
     *
     */
 
-    MPv1.Initialize = function(site_id, public_key){
+    MPv1.Initialize = function(site_id, public_key, coupon_mode, discount_action_url){
 
       //sets
       MPv1.site_id = site_id
       MPv1.public_key = public_key
+      MPv1.coupon_of_discounts.default = coupon_mode
+      MPv1.coupon_of_discounts.discount_action_url = discount_action_url
 
       Mercadopago.setPublishableKey(MPv1.public_key);
+
+      // flow coupon of discounts
+      if (MPv1.coupon_of_discounts.default) {
+        MPv1.addListenerEvent(document.querySelector(MPv1.selectors.applyCoupon), 'click', MPv1.checkCouponEligibility);
+      } else {
+        document.querySelector(MPv1.selectors.formCoupon).style.display = 'none';
+      }
 
       //flow: customer & cards
       var selectorPmCustomerAndCards = document.querySelector(MPv1.selectors.pmCustomerAndCards);
@@ -683,6 +761,8 @@
         document.querySelector(MPv1.selectors.mpDoc).style.display = 'none';
         // document.querySelector(MPv1.selectors.mpPaymentMethodSelector).removeAttribute('style');
 
+        document.querySelector(MPv1.selectors.formCustomerAndCard).removeAttribute('style');
+
         //removing not used fields for this country
         MPv1.inputs_to_create_token.splice(MPv1.inputs_to_create_token.indexOf("docType"), 1);
         MPv1.inputs_to_create_token.splice(MPv1.inputs_to_create_token.indexOf("docNumber"), 1);
@@ -694,7 +774,7 @@
       }
 
       //flow: MLB AND MCO
-      if(MPv1.site_id == "MLB"){
+      if (MPv1.site_id == "MLB") {
 
         document.querySelector(MPv1.selectors.mpDocType).style.display = 'none';
         document.querySelector(MPv1.selectors.mpIssuer).style.display = 'none';
@@ -702,11 +782,11 @@
         document.querySelector(MPv1.selectors.docNumber).classList.remove("mp-col-75");
         document.querySelector(MPv1.selectors.docNumber).classList.add("mp-col-100");
 
-      }else if (MPv1.site_id == "MCO") {
+      } else if (MPv1.site_id == "MCO") {
         document.querySelector(MPv1.selectors.mpIssuer).style.display = 'none';
       }
 
-      if(MPv1.debug){
+      if (MPv1.debug) {
         document.querySelector(MPv1.selectors.utilities_fields).style.display = 'inline-block';
         console.log(MPv1);
       }
