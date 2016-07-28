@@ -136,7 +136,7 @@ $customer = $mercadopago->get_or_create_customer($payer_email);
           <div class="mp-box-inputs mp-line" id="mp-securityCode-customer-and-card">
             <div class="mp-box-inputs mp-col-45">
               <label for="customer-and-card-securityCode"><?php echo $form_labels['form']['security_code']; ?> <em>*</em></label>
-              <input type="text" id="customer-and-card-securityCode" data-checkout="securityCode" name="mercadopago_custom[securityCode]" autocomplete="off" maxlength="4"/>
+              <input type="text" id="customer-and-card-securityCode" data-checkout="securityCode" autocomplete="off" maxlength="4"/>
 
               <span class="mp-error" id="mp-error-224" data-main="#customer-and-card-securityCode"> <?php echo $form_labels['error']['224']; ?> </span>
               <span class="mp-error" id="mp-error-E302" data-main="#customer-and-card-securityCode"> <?php echo $form_labels['error']['E302']; ?> </span>
@@ -199,7 +199,7 @@ $customer = $mercadopago->get_or_create_customer($payer_email);
           <div class="mp-box-inputs mp-line">
             <div class="mp-box-inputs mp-col-45">
               <label for="securityCode"><?php echo $form_labels['form']['security_code']; ?> <em>*</em></label>
-              <input type="text" id="securityCode" data-checkout="securityCode" name="mercadopago_custom[securityCode]" autocomplete="off" maxlength="4"/>
+              <input type="text" id="securityCode" data-checkout="securityCode" autocomplete="off" maxlength="4"/>
 
               <span class="mp-error" id="mp-error-224" data-main="#securityCode"> <?php echo $form_labels['error']['224']; ?> </span>
               <span class="mp-error" id="mp-error-E302" data-main="#securityCode"> <?php echo $form_labels['error']['E302']; ?> </span>
