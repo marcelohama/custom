@@ -13,28 +13,28 @@ $transaction_amount = 1499.90;
 $payer_email = MercadoPagoTest::getEmailBuyerTest($_REQUEST['site_id']);
 $mercadopago = new MP(MercadoPagoTest::getAccessTokenSellerTest($_REQUEST['site_id']));
 
-/*if (isset($_REQUEST['acao'])) {
-    $cart = Context::getContext()->cart;
-    $response = array(
-        'status' => 200,
-        'valor' => $cart->getOrderTotal(true, Cart::BOTH)
-    );
-} else {*/
 if (isset($_REQUEST['coupon_id']) && $_REQUEST['coupon_id'] != '') {
-    $coupon_id = $_REQUEST['coupon_id'];
-    $site_id = $_REQUEST['site_id'];
-    $response = $mercadopago->check_discount_campaigns($transaction_amount, $payer_email, $coupon_id);
-} else {
-    $response = array(
-        'status' => 400,
-        'response' => array(
-            'error' => 'invalid_id',
-            'message' => 'invalid id'
-        )
+    $response = $mercadopago->check_discount_campaigns(
+        $transaction_amount,
+        $payer_email,
+        $_REQUEST['coupon_id']
     );
+    header( 'HTTP/1.1 200 OK' );
+    header( 'Content-Type: application/json' );
+    echo json_encode( $response );
+} else {
+    $obj = new stdClass();
+    $obj->status = 404;
+    $obj->response = array(
+        'message' => 'a problem has occurred',
+        'error' => 'a problem has occurred',
+        'status' => 404,
+        'cause' => array()
+    );
+    header( 'HTTP/1.1 200 OK' );
+    header( 'Content-Type: application/json' );
+    echo json_encode( $obj );
 }
-header('Content-Type: application/json');
-echo json_encode($response);
 exit();
 
 ?>
