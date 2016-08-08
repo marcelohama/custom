@@ -10,8 +10,9 @@
     public_key: '',
     coupon_of_discounts: {
       discount_action_url: '',
-      default: false,
-      status: true
+      payer_email: '',
+      default: true,
+      status: false
     },
     customer_and_card: {
       default: true,
@@ -47,9 +48,8 @@
 
       couponCode: "#couponCode",
       applyCoupon: "#applyCoupon",
-      mpCouponEmpty: "#mpCouponEmpty",
-      mpCoupon400: "#mpCoupon400",
-      mpCoupon404: "#mpCoupon404",
+      mpCouponApplyed: "#mpCouponApplyed",
+      mpCouponError: "#mpCouponError",
 
       paymentMethodSelector: "#paymentMethodSelector",
       pmCustomerAndCards: "#payment-methods-for-customer-and-cards",
@@ -75,6 +75,9 @@
       paymentMethodId: "#paymentMethodId",
       amount: "#amount",
       token: "#token",
+      campaign_id: "#campaign_id",
+      campaign: "#campaign",
+      discount: "#discount",
       cardTruncated: "#cardTruncated",
       site_id: "#site_id",
       CustomerAndCard: '#CustomerAndCard',
@@ -88,31 +91,80 @@
     },
     text: {
       choose: "Choose",
-      other_bank: "Other Bank"
+      other_bank: "Other Bank",
+      discount_info1: "You will save",
+      discount_info2: "with discount from",
+      discount_info3: "Total of your purchase:",
+      discount_info4: "Total of your purchase with discount:",
+      discount_info5: "*Uppon payment approval",
+      discount_info6: "Terms and Conditions of Use",
+      coupon_empty: "Please, inform your coupon code",
+      apply: "Apply",
+      remove: "Remove"
     },
     paths:{
-      loading: "images/loading.gif"
+      loading: "images/loading.gif",
+      check: "images/check.png",
+      error: "images/error.png"
+    }
+  }
+
+  MPv1.currencyIdToCurrency = function (currency_id) {
+    if ( currency_id == 'ARS' ) {
+      return '$';
+    } else if ( currency_id == 'BRL' ) {
+      return 'R$';
+    } else if ( currency_id == 'COP' ) {
+      return '$';
+    } else if ( currency_id == 'CLP' ) {
+      return '$';
+    } else if ( currency_id == 'MXN' ) {
+      return '$';
+    } else if ( currency_id == 'VEF' ) {
+      return 'Bs';
+    } else if ( currency_id == 'PEN' ) {
+      return 'S/';
+    } else {
+      return '$';
     }
   }
 
   MPv1.checkCouponEligibility = function () {
-    if ( document.querySelector(MPv1.selectors.couponCode).value != "" ) {
-      document.querySelector(MPv1.selectors.mpCouponEmpty).style.display = 'none';
-      document.querySelector(MPv1.selectors.mpCoupon400).style.display = 'none';
-      document.querySelector(MPv1.selectors.mpCoupon404).style.display = 'none';
-
+    if ( document.querySelector(MPv1.selectors.couponCode).value == "" ) {
+      // coupon code is empty
+      document.querySelector(MPv1.selectors.mpCouponApplyed).style.display = 'none';
+      document.querySelector(MPv1.selectors.mpCouponError).style.display = 'block';
+      document.querySelector(MPv1.selectors.mpCouponError).innerHTML = MPv1.text.coupon_empty;
+      MPv1.coupon_of_discounts.status = false;
+      document.querySelector(MPv1.selectors.couponCode).style.background = null;
+      document.querySelector(MPv1.selectors.applyCoupon).value = MPv1.text.apply;
+      document.querySelector(MPv1.selectors.discount).value = 0;
+      MPv1.cardsHandler();
+    } else if ( MPv1.coupon_of_discounts.status ) {
+      // we already have a coupon set, so we remove it
+      document.querySelector(MPv1.selectors.mpCouponApplyed).style.display = 'none';
+      document.querySelector(MPv1.selectors.mpCouponError).style.display = 'none';
+      MPv1.coupon_of_discounts.status = false;
+      document.querySelector(MPv1.selectors.applyCoupon).style.background = null;
+      document.querySelector(MPv1.selectors.applyCoupon).value = MPv1.text.apply;
+      document.querySelector(MPv1.selectors.couponCode).value = "";
+      document.querySelector(MPv1.selectors.couponCode).style.background = null;
+      document.querySelector(MPv1.selectors.discount).value = 0;
+      MPv1.cardsHandler();
+    } else {
       // set loading
+      document.querySelector(MPv1.selectors.mpCouponApplyed).style.display = 'none';
+      document.querySelector(MPv1.selectors.mpCouponError).style.display = 'none';
       document.querySelector(MPv1.selectors.couponCode).style.background = "url("+MPv1.paths.loading+") 98% 50% no-repeat #fff";
-
-      /*alert(
-        "\nTransaction Amount: " + document.querySelector(MPv1.selectors.amount).value +
-        "\Payer email: " + MPv1.payer_email +
-        "\nCoupon code: " + document.querySelector(MPv1.selectors.couponCode).value
-      );*/
+      document.querySelector(MPv1.selectors.applyCoupon).disabled = true;
       var request = new XMLHttpRequest();
       request.open(
         'GET',
-        MPv1.coupon_of_discounts.discount_action_url + "?coupon_id=" + document.querySelector(MPv1.selectors.couponCode).value,
+        MPv1.coupon_of_discounts.discount_action_url +
+          "?site_id=" + MPv1.site_id +
+          "&coupon_id=" + document.querySelector(MPv1.selectors.couponCode).value +
+          "&amount=" + document.querySelector(MPv1.selectors.amount).value +
+          "&payer=" + MPv1.coupon_of_discounts.payer_email,
         true
       );
       request.onreadystatechange = function() {
@@ -120,26 +172,54 @@
           if (request.status == 200) {
             var response = JSON.parse(request.responseText);
             if (response.status == 200) {
-              alert('Stt 200');
-            } else if (response.status == 400) {
-              document.querySelector(MPv1.selectors.mpCoupon400).innerHTML = response.response.message;
-              document.querySelector(MPv1.selectors.mpCoupon400).style.display = 'block';
-            } else if (response.status == 404) {
-              document.querySelector(MPv1.selectors.mpCoupon404).innerHTML = response.response.message;
-              document.querySelector(MPv1.selectors.mpCoupon404).style.display = 'block';
+              document.querySelector(MPv1.selectors.mpCouponApplyed).style.display = 'block';
+              document.querySelector(MPv1.selectors.discount).value = response.response.coupon_amount;
+              document.querySelector(MPv1.selectors.mpCouponApplyed).innerHTML =
+                "<div style='border-style: solid; border-width:thin; border-color: #009EE3; padding: 8px 8px 8px 8px; margin-top: 4px;'>" +
+                MPv1.text.discount_info1 + " <strong>" + MPv1.currencyIdToCurrency(response.response.currency_id) + " " +
+                Math.round(response.response.coupon_amount*100)/100 + "</strong> " + MPv1.text.discount_info2 + " " + response.response.name + ".<br>" +
+                MPv1.text.discount_info3 + " <strong>" + MPv1.currencyIdToCurrency(response.response.currency_id) +
+                " " + Math.round(MPv1.getAmountWithoutDiscount()*100)/100 + "</strong><br>" +
+                MPv1.text.discount_info4 + " <strong>" + MPv1.currencyIdToCurrency(response.response.currency_id) +
+                " " + Math.round(MPv1.getAmount()*100)/100 + "*</strong><br>" +
+                "<i>" + MPv1.text.discount_info5 + "</i><br>" +
+                "<a href='https://api.mercadolibre.com/campaigns/" + response.response.id + "/terms_and_conditions?format_type=html' target='_blank'>" +
+                MPv1.text.discount_info6 + "</a></div>";
+              document.querySelector(MPv1.selectors.mpCouponError).style.display = 'none';
+              MPv1.coupon_of_discounts.status = true;
+              document.querySelector(MPv1.selectors.couponCode).style.background = null;
+              document.querySelector(MPv1.selectors.couponCode).style.background = "url("+MPv1.paths.check+") 98% 50% no-repeat #fff";
+              document.querySelector(MPv1.selectors.applyCoupon).value = MPv1.text.remove;
+              MPv1.cardsHandler();
+              document.querySelector(MPv1.selectors.campaign_id).value = response.response.id;
+              document.querySelector(MPv1.selectors.campaign).value = response.response.name;
+            } else if (response.status == 400 || response.status == 404) {
+              document.querySelector(MPv1.selectors.mpCouponApplyed).style.display = 'none';
+              document.querySelector(MPv1.selectors.mpCouponError).style.display = 'block';
+              document.querySelector(MPv1.selectors.mpCouponError).innerHTML = response.response.message;
+              MPv1.coupon_of_discounts.status = false;
+              document.querySelector(MPv1.selectors.couponCode).style.background = null;
+              document.querySelector(MPv1.selectors.couponCode).style.background = "url("+MPv1.paths.error+") 98% 50% no-repeat #fff";
+              document.querySelector(MPv1.selectors.applyCoupon).value = MPv1.text.apply;
+              document.querySelector(MPv1.selectors.discount).value = 0;
+              MPv1.cardsHandler();
             }
           } else {
-            //request failed
-            alert('Stt 400 / Response is ' + request.responseText);
+            // request failed
+            document.querySelector(MPv1.selectors.mpCouponApplyed).style.display = 'none';
+            document.querySelector(MPv1.selectors.mpCouponError).style.display = 'none';
+            MPv1.coupon_of_discounts.status = false;
+            document.querySelector(MPv1.selectors.applyCoupon).style.background = null;
+            document.querySelector(MPv1.selectors.applyCoupon).value = MPv1.text.apply;
+            document.querySelector(MPv1.selectors.couponCode).value = "";
+            document.querySelector(MPv1.selectors.couponCode).style.background = null;
+            document.querySelector(MPv1.selectors.discount).value = 0;
+            MPv1.cardsHandler();
           }
-          document.querySelector(MPv1.selectors.couponCode).style.background = null;
+          document.querySelector(MPv1.selectors.applyCoupon).disabled = false;
         }
       };
       request.send(null);
-    } else {
-      document.querySelector(MPv1.selectors.mpCouponEmpty).style.display = 'block';
-      document.querySelector(MPv1.selectors.mpCoupon400).style.display = 'none';
-      document.querySelector(MPv1.selectors.mpCoupon404).style.display = 'none';
     }
   }
 
@@ -637,8 +717,12 @@
 
     }
 
-    MPv1.getAmount = function(){
-      return document.querySelector(MPv1.selectors.amount).value;
+    MPv1.getAmount = function() {
+        return document.querySelector(MPv1.selectors.amount).value - document.querySelector(MPv1.selectors.discount).value;
+    }
+
+    MPv1.getAmountWithoutDiscount = function() {
+        return document.querySelector(MPv1.selectors.amount).value;
     }
 
     /*
@@ -715,13 +799,14 @@
     *
     */
 
-    MPv1.Initialize = function(site_id, public_key, coupon_mode, discount_action_url){
+    MPv1.Initialize = function(site_id, public_key, coupon_mode, discount_action_url, payer_email){
 
       //sets
       MPv1.site_id = site_id
       MPv1.public_key = public_key
       MPv1.coupon_of_discounts.default = coupon_mode
       MPv1.coupon_of_discounts.discount_action_url = discount_action_url
+      MPv1.coupon_of_discounts.payer_email = payer_email
 
       Mercadopago.setPublishableKey(MPv1.public_key);
 

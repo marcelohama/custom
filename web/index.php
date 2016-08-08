@@ -31,7 +31,18 @@ $customer = $mercadopago->get_or_create_customer($payer_email);
 
     $form_labels = array(
       "form" => array(
-        "coupon_of_discounts" => "Coupon of Discount",
+        "coupon_empty" => "Please, inform your coupon code",
+        'apply' => "Apply",
+        'remove' => "Remove",
+        'discount_info1' => "You will save",
+        'discount_info2' => "with discount from",
+        'discount_info3' => "Total of your purchase:",
+        'discount_info4' => "Total of your purchase with discount:",
+        'discount_info5' => "*Uppon payment approval",
+        'discount_info6' => "Terms and Conditions of Use",
+        'coupon_of_discounts' => "Discount Coupon",
+        'label_other_bank' => "Other Bank",
+        'label_choose' => "Choose",
         "payment_method" => "Payment Method",
         "credit_card_number" => "Credit card number",
         "expiration_month" => "Expiration month",
@@ -87,18 +98,17 @@ $customer = $mercadopago->get_or_create_customer($payer_email);
     ?>
 
     <div class="mp-box-inputs mp-line" id="mercadopago-form-coupon">
-      <label for="couponCodeLabel"><?php echo $form_labels['form']['coupon_of_discounts']; ?></label>
+    <label for="couponCodeLabel"><?php echo $form_labels['form']['coupon_of_discounts']; ?></label>
       <div class="mp-box-inputs mp-col-65">
-        <input type="text" id="couponCode" data-checkout="coupon_code" name="mercadopago_custom[coupon_code]" autocomplete="off" maxlength="24" value="couponcode"/>
-        <span class="mp-error" id="mpCouponEmpty" > <?php echo $form_labels['coupon_error']['EMPTY']; ?> </span>
-        <span class="mp-error" id="mpCoupon400" ></span>
-        <span class="mp-error" id="mpCoupon404" ></span>
+        <input type="text" id="couponCode" name="mercadopago_custom[coupon_code]" autocomplete="off" maxlength="24" />
+        <span class="mp-discount" id="mpCouponApplyed" ></span>
+        <span class="mp-error" id="mpCouponError" ></span>
       </div>
       <div class="mp-box-inputs mp-col-10">
         <div id="mp-separete-date"></div>
       </div>
       <div class="mp-box-inputs mp-col-25">
-        <input type="button" id="applyCoupon" value="Apply" >
+        <input type="button" class="button" id="applyCoupon" value="<?php echo $form_labels['form']['apply']; ?>" >
       </div>
     </div>
 	  
@@ -256,6 +266,9 @@ $customer = $mercadopago->get_or_create_customer($payer_email);
         <div class="mp-box-inputs mp-col-100" id="mercadopago-utilities">
           <input type="text" id="site_id"  name="mercadopago_custom[site_id]"/>
           <input type="text" id="amount" value="5249.99" name="mercadopago_custom[amount]"/>
+          <input type="hidden" id="campaign_id" name="mercadopago_custom[campaign_id]"/>
+          <input type="hidden" id="campaign" name="mercadopago_custom[campaign]"/>
+          <input type="hidden" id="discount" name="mercadopago_custom[discount]"/>
           <input type="text" id="paymentMethodId" name="mercadopago_custom[paymentMethodId]"/>
           <input type="text" id="token" name="mercadopago_custom[token]"/>
           <input type="text" id="cardTruncated" name="mercadopago_custom[cardTruncated]"/>
@@ -278,7 +291,21 @@ $customer = $mercadopago->get_or_create_customer($payer_email);
     <script>
     var mercadopago_site_id = '<?php echo $_REQUEST['site_id']; ?>';
     var mercadopago_public_key = '<?php echo MercadoPagoTest::getPublicKeyTest($_REQUEST['site_id']); ?>';
-    MPv1.Initialize(mercadopago_site_id, mercadopago_public_key, true, 'discount.php');
+    var mercadopago_payer_email = '<?php echo $payer_email; ?>';
+
+    MPv1.text.choose = '<?php echo $form_labels["form"]["label_choose"]; ?>';
+    MPv1.text.other_bank = '<?php echo $form_labels["form"]["label_other_bank"]; ?>';
+    MPv1.text.discount_info1 = '<?php echo $form_labels["form"]["discount_info1"]; ?>';
+    MPv1.text.discount_info2 = '<?php echo $form_labels["form"]["discount_info2"]; ?>';
+    MPv1.text.discount_info3 = '<?php echo $form_labels["form"]["discount_info3"]; ?>';
+    MPv1.text.discount_info4 = '<?php echo $form_labels["form"]["discount_info4"]; ?>';
+    MPv1.text.discount_info5 = '<?php echo $form_labels["form"]["discount_info5"]; ?>';
+    MPv1.text.discount_info6 = '<?php echo $form_labels["form"]["discount_info6"]; ?>';
+    MPv1.text.apply = '<?php echo $form_labels["form"]["apply"]; ?>';
+    MPv1.text.remove = '<?php echo $form_labels["form"]["remove"]; ?>';
+    MPv1.text.coupon_empty = '<?php echo $form_labels["form"]["coupon_empty"]; ?>';
+
+    MPv1.Initialize(mercadopago_site_id, mercadopago_public_key, true, 'discount.php', mercadopago_payer_email);
     </script>
 
 
