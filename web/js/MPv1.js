@@ -91,7 +91,7 @@
 
       box_loading: "#mp-box-loading",
       submit: "#btnSubmit",
-      form: '#mercadopago-formulario',
+      form: '#mercadopago-form',
       formDiv: '#mercadopago-form',
       formCoupon: '#mercadopago-form-coupon',
       formCustomerAndCard: '#mercadopago-form-customer-and-card',
