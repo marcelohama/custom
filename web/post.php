@@ -81,6 +81,12 @@ if($params_mercadopago['CustomerAndCard'] == 'true'){
 $payment['metadata']['token'] = $params_mercadopago['token'];
 $payment['metadata']['customer_id'] = $customer['id'];
 
+if(isset($params_mercadopago['campaign_id']) && $params_mercadopago['campaign_id'] != ""){
+  $payment['coupon_amount'] = round($params_mercadopago['discount'],2);
+  $payment['coupon_code'] = $params_mercadopago['coupon_code'];
+  $payment['campaign_id'] = (int) $params_mercadopago['campaign_id'];
+}
+
 
 $payment = $mercadopago->create_payment($payment);
 

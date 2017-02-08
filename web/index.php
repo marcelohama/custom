@@ -97,23 +97,28 @@ $customer = $mercadopago->get_or_create_customer($payer_email);
     );
     ?>
 
-    <div class="mp-box-inputs mp-line" id="mercadopago-form-coupon">
-    <label for="couponCodeLabel"><?php echo $form_labels['form']['coupon_of_discounts']; ?></label>
-      <div class="mp-box-inputs mp-col-65">
-        <input type="text" id="couponCode" name="mercadopago_custom[coupon_code]" autocomplete="off" maxlength="24" />
-        <span class="mp-discount" id="mpCouponApplyed" ></span>
-        <span class="mp-error" id="mpCouponError" ></span>
-      </div>
-      <div class="mp-box-inputs mp-col-10">
-        <div id="mp-separete-date"></div>
-      </div>
-      <div class="mp-box-inputs mp-col-25">
-        <input type="button" class="button" id="applyCoupon" value="<?php echo $form_labels['form']['apply']; ?>" >
-      </div>
-    </div>
-	  
     <!-- <div id="mercadopago-form" > -->
     <form action="post.php" method="post">
+
+      <div class="mp-box-inputs mp-line" id="mercadopago-form-coupon">
+          <label for="couponCodeLabel"><?php echo $form_labels['form']['coupon_of_discounts']; ?></label>
+          <div class="mp-box-inputs mp-col-65">
+            <input type="text" id="couponCode" name="mercadopago_custom[coupon_code]" autocomplete="off" maxlength="24" />
+          </div>
+
+          <div class="mp-box-inputs mp-col-10">
+            <div id="mp-separete-date"></div>
+          </div>
+
+          <div class="mp-box-inputs mp-col-25">
+            <input type="button" class="button" id="applyCoupon" value="<?php echo $form_labels['form']['apply']; ?>" >
+          </div>
+
+          <div class="mp-box-inputs mp-col-100 mp-box-message">
+            <span class="mp-discount" id="mpCouponApplyed" ></span>
+            <span class="mp-error" id="mpCouponError" ></span>
+          </div>
+      </div>
 
       <div id="mercadopago-form-customer-and-card">
 
