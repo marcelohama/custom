@@ -82,6 +82,13 @@
       site_id: "#site_id",
       CustomerAndCard: '#CustomerAndCard',
 
+      boxInstallments: '#mp-box-installments',
+      boxInstallmentsSelector: '#mp-box-installments-selector',
+      taxCFT: '#mp-box-input-tax-cft',
+      taxTEA: '#mp-box-input-tax-tea',
+      taxTextCFT: '#mp-tax-cft-text',
+      taxTextTEA: '#mp-tax-tea-text',
+
       box_loading: "#mp-box-loading",
       submit: "#btnSubmit",
       form: '#mercadopago-formulario',
@@ -427,6 +434,7 @@
   */
 
   MPv1.setInstallmentInfo = function(status, response) {
+    console.log(response);
     var selectorInstallments = document.querySelector(MPv1.selectors.installments);
 
     if (response.length > 0) {
@@ -436,7 +444,21 @@
 
       // fragment.appendChild(option);
       for (var i = 0; i < payerCosts.length; i++) {
-        html_option += '<option value="'+ payerCosts[i].installments +'">' + (payerCosts[i].recommended_message || payerCosts[i].installments) + '</option>';
+
+        // Resolution 51/2017
+        var dataInput = "";
+        if(MPv1.site_id == 'MLA'){
+          var tax = payerCosts[i].labels;
+          if(tax.length > 0){
+            for (var l = 0; l < tax.length; l++) {
+              if (tax[l].indexOf('CFT_') !== -1){
+                dataInput = 'data-tax="' + tax[l] + '"'
+              }
+            }
+          }
+        }
+
+        html_option += '<option value="'+ payerCosts[i].installments +'" '+ dataInput +'>' + (payerCosts[i].recommended_message || payerCosts[i].installments) + '</option>';
       }
 
       // not take the user's selection if equal
@@ -445,6 +467,8 @@
       }
 
       selectorInstallments.removeAttribute('disabled');
+
+      MPv1.showTaxes();
     }
   }
 
@@ -797,6 +821,29 @@
 
     // MPv1.cardsHandler();
 
+    MPv1.showTaxes = function(){
+      var selectorIsntallments = document.querySelector(MPv1.selectors.installments);
+      var tax = selectorIsntallments.options[selectorIsntallments.selectedIndex].getAttribute('data-tax');
+
+      var cft = ""
+      var tea = ""
+
+      if(tax != null){
+        var tax_split = tax.split('|');
+        cft = tax_split[0].replace('_', ' ');
+        tea = tax_split[1].replace('_', ' ');
+
+        if(cft == "CFT 0,00%" && tea == "TEA 0,00%"){
+          cft = ""
+          tea = ""
+        }
+
+      }
+
+      document.querySelector(MPv1.selectors.taxTextCFT).innerHTML = cft;
+      document.querySelector(MPv1.selectors.taxTextTEA).innerHTML = tea;
+
+    }
 
     /*
     *
@@ -958,6 +1005,19 @@
 
       } else if (MPv1.site_id == "MCO") {
         document.querySelector(MPv1.selectors.mpIssuer).style.display = 'none';
+      } else if (MPv1.site_id == "MLA") {
+
+
+        document.querySelector(MPv1.selectors.boxInstallmentsSelector).classList.remove("mp-col-100");
+        document.querySelector(MPv1.selectors.boxInstallmentsSelector).classList.add("mp-col-70");
+
+        document.querySelector(MPv1.selectors.taxCFT).style.display = 'block';
+        document.querySelector(MPv1.selectors.taxTEA).style.display = 'block';
+
+        MPv1.addListenerEvent(document.querySelector(MPv1.selectors.installments), 'change', MPv1.showTaxes);
+
+        // taxCFT: '#mp-box-input-tax-cft',
+        // taxTEA: '#mp-box-input-tax-tea',
       }
 
       if (MPv1.debug) {

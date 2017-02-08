@@ -248,9 +248,19 @@ $customer = $mercadopago->get_or_create_customer($payer_email);
 
         </div>  <!-- end #mercadopago-form -->
 
-        <div class="mp-box-inputs mp-col-100">
-          <label for="installments"><?php echo $form_labels['form']['installments']; ?> <em>*</em></label>
-          <select id="installments" data-checkout="installments" name="mercadopago_custom[installments]"></select>
+        <div id="mp-box-installments">
+          <div class="mp-box-inputs mp-col-100" id="mp-box-installments-selector">
+            <label for="installments"><?php echo $form_labels['form']['installments']; ?> <em>*</em></label>
+            <select id="installments" data-checkout="installments" name="mercadopago_custom[installments]"></select>
+          </div>
+
+          <div class="mp-box-inputs mp-col-30" id="mp-box-input-tax-cft">
+            <div id="mp-tax-cft-text"></div>
+          </div>
+
+          <div class="mp-box-inputs mp-col-100" id="mp-box-input-tax-tea">
+            <div id="mp-tax-tea-text"></div>
+          </div>
         </div>
 
 
