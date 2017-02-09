@@ -1013,8 +1013,6 @@
 
         MPv1.addListenerEvent(document.querySelector(MPv1.selectors.installments), 'change', MPv1.showTaxes);
 
-        // taxCFT: '#mp-box-input-tax-cft',
-        // taxTEA: '#mp-box-input-tax-tea',
       }
 
       if (MPv1.debug) {
