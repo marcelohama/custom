@@ -434,7 +434,6 @@
   */
 
   MPv1.setInstallmentInfo = function(status, response) {
-    console.log(response);
     var selectorInstallments = document.querySelector(MPv1.selectors.installments);
 
     if (response.length > 0) {
@@ -575,8 +574,6 @@
 
       var $inputs = MPv1.getForm().querySelectorAll('[data-checkout]');
       var $inputs_to_create_token = MPv1.getInputsToCreateToken();
-
-      console.log("createTokenByEvent", $inputs_to_create_token);
 
       for(var x = 0; x < $inputs.length; x++){
         var element = $inputs[x];
