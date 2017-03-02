@@ -1,5 +1,8 @@
-// MPv1
-// Handlers Form Mercado Pago v1
+/*
+ * MPv1
+ * Handlers Form Mercado Pago v1
+ * @version     1.0.4
+ */
 
 (function (){
 
@@ -978,6 +981,10 @@
         //hide documento for mex
         document.querySelector(MPv1.selectors.mpDoc).style.display = 'none';
         // document.querySelector(MPv1.selectors.mpPaymentMethodSelector).removeAttribute('style');
+
+        if(!MPv1.customer_and_card.status){
+          document.querySelector(MPv1.selectors.mpSecurityCodeCustomerAndCard).style.display = 'none';
+        }
 
         document.querySelector(MPv1.selectors.formCustomerAndCard).removeAttribute('style');
 
