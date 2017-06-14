@@ -98,7 +98,7 @@ $customer = $mercadopago->get_or_create_customer($payer_email);
     ?>
 
     <!-- <div id="mercadopago-form" > -->
-    <form action="post.php" method="post">
+    <form action="post.php" method="post" id="mercadopago-form-general" name="mercadopago-form-general">
 
       <div class="mp-box-inputs mp-line" id="mercadopago-form-coupon">
           <label for="couponCodeLabel"><?php echo $form_labels['form']['coupon_of_discounts']; ?></label>
@@ -267,7 +267,7 @@ $customer = $mercadopago->get_or_create_customer($payer_email);
         <div class="mp-box-inputs mp-line">
 
           <div class="mp-box-inputs mp-col-50">
-            <input type="submit" id="submit" value="Pay">
+            <input type="submit" id="btnSubmit" value="Pay" name="btnSubmit">
           </div>
 
           <!-- NOT DELETE LOADING-->
@@ -319,6 +319,9 @@ $customer = $mercadopago->get_or_create_customer($payer_email);
     MPv1.text.apply = '<?php echo $form_labels["form"]["apply"]; ?>';
     MPv1.text.remove = '<?php echo $form_labels["form"]["remove"]; ?>';
     MPv1.text.coupon_empty = '<?php echo $form_labels["form"]["coupon_empty"]; ?>';
+
+    MPv1.selectors.form = "#mercadopago-form-general"
+    MPv1.create_token_on.event = false;
 
     MPv1.Initialize(mercadopago_site_id, mercadopago_public_key, true, 'discount.php', mercadopago_payer_email);
     </script>

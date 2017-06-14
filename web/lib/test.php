@@ -6,7 +6,7 @@ class MercadoPagoTest {
   static function getPublicKeyTest($site_id){
     $public_keys = array(
       "MLA" => "TEST-3a0f5da2-c8e4-41c0-901e-338f01f58e2c",
-      "MLB" => "APP_USR-0c965655-316d-4ea9-9db5-7b5b012dc9f8",
+      "MLB" => "TEST-f11d5ae5-bd73-4dd6-92eb-83398695ff79",
       "MLC" => "TEST-1e7e15ea-b95c-4c18-9b71-a2e33c4d974c",
       "MCO" => "TEST-cd1e674d-7ada-4eab-aa0f-97901cd85de6",
       "MLM" => "TEST-fda12e26-c017-440d-8bd5-9537b36076bc",
@@ -20,7 +20,7 @@ class MercadoPagoTest {
   static function getAccessTokenSellerTest($site_id){
     $access_tokens = array(
       "MLA" => "TEST-5065100305679755-012611-36d05dd89010a4e897c93ccacba22886__LA_LC__-201657914",
-      "MLB" => "APP_USR-8978625825179894-013112-f91049531618484e121719201ad623da__LD_LB__-242605823",
+      "MLB" => "TEST-8978625825179894-013112-44fe89d9b2b8fccb3554fbbba564ec84__LD_LA__-242605823",
       "MLC" => "TEST-4301459443670481-022409-500160028f3e305c59f42c4e0e918629__LA_LC__-206913132",
       "MCO" => "TEST-8926119823541847-022316-89a07f0dbaeb094a9ebeb0741f364cb7__LA_LD__-201658731",
       "MLM" => "TEST-8125048893657995-012611-971865e2db51654ac76a28b66ff6e174__LC_LD__-201658709",
