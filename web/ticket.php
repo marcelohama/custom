@@ -58,7 +58,7 @@ foreach ( $payments['response'] as $payment ) {
         "coupon_of_discounts" => "Discount Coupon",
         "label_choose" => "Choose",
         "issuer_selection" => "Please, select the ticket issuer of your preference.",
-        "payment_instructions" => "Click \"Place order\" button. The ticket will be generated and you will be redirected to print it.",
+        "payment_instructions" => "Click \"Pay\" button. The ticket will be generated and you will be redirected to print it.",
         "ticket_note" => "Important: The order will be confirmed only after the payment approval.",
         "febraban_rules" => "Informações solicitadas em conformidade com as normas das circulares Nro. 3.461/09, 3.598/12 e 3.656/13 do Banco Central do Brasil.",
         "select" => "SELECIONE...",
