@@ -64,7 +64,7 @@ foreach ( $payments['response'] as $payment ) {
         "select" => "SELECIONE...",
         "name" => "NOME",
         "surname" => "SOBRENOME",
-        "docNumber" => "CPF",
+        "docNumber" => "CPF/CNPJ",
         "address" => "ENDEREÇO",
         "number" => "NÚMERO",
         "city" => "CIDADE",
@@ -161,29 +161,29 @@ foreach ( $payments['response'] as $payment ) {
           <div class="form-row">
             <div class="form-col-4">
               <label  for="firstname"><?php echo $form_labels['form']['name']; ?><em class="obrigatorio"> *</em></label>
-              <input type="text" value="<?php echo $customer['firstname']; ?>" data-checkout="firstname" placeholder="<?php echo $form_labels['form']['name']; ?>" id="firstname" class="form-control-mine">
+              <input type="text" value="<?php echo $customer['firstname']; ?>" placeholder="<?php echo $form_labels['form']['name']; ?>" id="firstname" class="form-control-mine">
             </div>
             <div class="form-col-4">
               <label  for="lastname"><?php echo $form_labels['form']['surname']; ?><em class="obrigatorio"> *</em></label>
-              <input type="text" value="<?php echo $customer['lastname']; ?>" data-checkout="lastname" placeholder="<?php echo $form_labels['form']['surname']; ?>" id="lastname" class="form-control-mine">
+              <input type="text" value="<?php echo $customer['lastname']; ?>" placeholder="<?php echo $form_labels['form']['surname']; ?>" id="lastname" class="form-control-mine">
             </div>
             <div class="form-col-4">
               <label for="docNumber"><?php echo $form_labels['form']['docNumber']; ?><em class="obrigatorio"> *</em></label>
-              <input type="text" placeholder="<?php echo $form_labels['form']['docNumber']; ?>" class="form-control-mine" maxlength="11" id="docNumber"
-                onkeypress="return event.charCode >= 48 && event.charCode <= 57" data-checkout="docNumber" value="<?php echo $customer['docNumber']; ?>" >
+              <input type="text" placeholder="<?php echo $form_labels['form']['docNumber']; ?>" class="form-control-mine" maxlength="14" id="docNumber"
+                onkeypress="return event.charCode >= 48 && event.charCode <= 57" value="<?php echo $customer['docNumber']; ?>" >
             </div>
           </div>
           <span class="erro_febraban" data-main="#firstname" id="error_firstname"><?php echo $form_labels['error']['FEB001']; ?></span>
           <span class="erro_febraban" data-main="#lastname" id="error_lastname"><?php echo $form_labels['error']['FEB002']; ?></span>
           <span class="erro_febraban" data-main="#docNumber" id="error_docNumber"><?php echo $form_labels['error']['FEB003']; ?></span>
           <div class="form-row">
-            <div class="form-col-9">
+            <div class="form-col-8">
               <label for="address"><?php echo $form_labels['form']['address']; ?><em class="obrigatorio"> *</em></label>
-              <input type="text" value="<?php echo $customer['address']; ?>" data-checkout="address" placeholder="<?php echo $form_labels['form']['surname']; ?>" id="address" class="form-control-mine">
+              <input type="text" value="<?php echo $customer['address']; ?>" placeholder="<?php echo $form_labels['form']['surname']; ?>" id="address" class="form-control-mine">
             </div>
-            <div class="form-col-3">
+            <div class="form-col-4">
               <label for="number"><?php echo $form_labels['form']['number']; ?><em class="obrigatorio"> *</em></label>
-              <input type="text" value="<?php echo $customer['addressnumber']; ?>" data-checkout="number" placeholder="<?php echo $form_labels['form']['number']; ?>" id="number"
+              <input type="text" value="<?php echo $customer['addressnumber']; ?>" placeholder="<?php echo $form_labels['form']['number']; ?>" id="number"
                 onkeypress="return event.charCode >= 48 && event.charCode <= 57"  class="form-control-mine">
             </div>
           </div>
@@ -192,11 +192,11 @@ foreach ( $payments['response'] as $payment ) {
           <div class="form-row">
             <div class="form-col-4">
               <label for="city"><?php echo $form_labels['form']['city']; ?><em class="obrigatorio"> *</em></label>
-              <input type="text" value="<?php echo $customer['city']; ?>" data-checkout="city" placeholder="<?php echo $form_labels['form']['city']; ?>" id="city" class="form-control-mine">
+              <input type="text" value="<?php echo $customer['city']; ?>" placeholder="<?php echo $form_labels['form']['city']; ?>" id="city" class="form-control-mine">
             </div>
             <div class="form-col-4">
               <label for="state"><?php echo $form_labels['form']['state']; ?><em class="obrigatorio"> *</em></label>
-              <select name="state" id="state" data-checkout="state" class="form-control-mine">
+              <select name="state" id="state" class="form-control-mine">
                 <option value=""><?php echo $form_labels['form']['select']; ?></option>
                 <option value="AC" <?php if ($customer['state'] == 'AC') {echo 'selected="selected"';} ?>>Acre</option>
                 <option value="AL" <?php if ($customer['state'] == 'AL') {echo 'selected="selected"';} ?>>Alagoas</option>
@@ -229,7 +229,7 @@ foreach ( $payments['response'] as $payment ) {
             </div>
             <div class="form-col-4">
               <label for="zipcode"><?php echo $form_labels['form']['zipcode']; ?><em class="obrigatorio"> *</em></label>
-              <input type="text" value="<?php echo $customer['zipcode']; ?>" data-checkout="zipcode" placeholder="<?php echo $form_labels['form']['zipcode']; ?>" id="zipcode"
+              <input type="text" value="<?php echo $customer['zipcode']; ?>" placeholder="<?php echo $form_labels['form']['zipcode']; ?>" id="zipcode"
                 onkeypress="return event.charCode >= 48 && event.charCode <= 57" class="form-control-mine">
             </div>
           </div>
