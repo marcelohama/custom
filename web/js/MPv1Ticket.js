@@ -323,13 +323,13 @@
       event.preventDefault();
       MPv1Ticket.hideErrors();
       var valid_to_ticket = true;
-      var $inputs = MPv1Ticket.getForm().querySelectorAll('[data-checkout]');
+      var $inputs = MPv1Ticket.getForm().querySelectorAll('[id]');
       var $inputs_to_validate_ticket = MPv1Ticket.inputs_to_validate_ticket;
       var febraban = [];
       var arr = [];
       for (var x = 0; x < $inputs.length; x++) {
         var element = $inputs[x];
-        if($inputs_to_validate_ticket.indexOf(element.getAttribute("data-checkout")) > -1){
+        if($inputs_to_validate_ticket.indexOf(element.getAttribute("id")) > -1){
           if (element.value == -1 || element.value == "") {
             arr.push(element.id);
             valid_to_ticket = false;
@@ -374,8 +374,8 @@
     }
 
     MPv1Ticket.hideErrors = function(){
-      for(var x = 0; x < document.querySelectorAll('[data-checkout]').length; x++){
-        var $field = document.querySelectorAll('[data-checkout]')[x];
+      for(var x = 0; x < document.querySelectorAll('[id]').length; x++){
+        var $field = document.querySelectorAll('[id]')[x];
         $field.classList.remove("mp-error-input");
       } //end for
       for(var x = 0; x < document.querySelectorAll('.erro_febraban').length; x++){

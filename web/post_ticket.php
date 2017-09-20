@@ -73,28 +73,40 @@ $payment['additional_info']['items'][] = $item;
 // Always Present Payer Info
 $payment['additional_info']['payer']['first_name'] = $params_mercadopago['firstname'];
 $payment['additional_info']['payer']['last_name'] = $params_mercadopago['lastname'];
-$payment['additional_info']['payer']['address']['street_name'] = $params_mercadopago['address'];
-$payment['additional_info']['payer']['address']['street_number'] = (int) $params_mercadopago['number'];
-$payment['additional_info']['payer']['address']['zip_code'] = $params_mercadopago['zipcode'];
+
 // Not Always Present Info
-$payment['additional_info']['payer']['registration_date'] = "2015-06-02T12:58:41.425-04:00";
-$payment['additional_info']['payer']['phone']['area_code'] = "11";
+//$payment['additional_info']['payer']['registration_date'] = "2015-06-02T12:58:41.425-04:00";
+//$payment['additional_info']['payer']['phone']['area_code'] = "11";
 $payment['additional_info']['payer']['phone']['number'] = "1234 1234";
+$payment['additional_info']['payer']['address']['zip_code'] = $params_mercadopago['zipcode'];
+$payment['additional_info']['payer']['address']['street_name'] = $params_mercadopago['address'] + (int) $params_mercadopago['number'];
+
 // MLB Payer Info
-if ($params_mercadopago['site_id']) {
-	$payment['payer']['identification']['type'] = "CPF";
+if (isset($params_mercadopago['site_id']) && $params_mercadopago['site_id'] == 'MLB') {
+	$payment['payer']['first_name'] = $params_mercadopago['firstname'];
+	$payment['payer']['last_name'] = $params_mercadopago['lastname'];
+	$payment['payer']['identification']['type'] = 'CPF';
 	$payment['payer']['identification']['number'] = $params_mercadopago['docNumber'];
+	$payment['payer']['address']['street_name'] =
+		$params_mercadopago['address'] . ' - ' .
+		$params_mercadopago['number'] . ' - ' .
+		$params_mercadopago['state'];
+	$payment['payer']['address']['street_number'] = (int) $params_mercadopago['number'];
+	$payment['payer']['address']['neighborhood'] = $params_mercadopago['city'];
+	$payment['payer']['address']['city'] = $params_mercadopago['city'];
+	$payment['payer']['address']['federal_unit'] = $params_mercadopago['state'];
+	$payment['payer']['address']['zip_code'] = $params_mercadopago['zipcode'];
 }
 
 // Shipments Info
 $payment['additional_info']['shipments']['receiver_address']['zip_code'] = $params_mercadopago['zipcode'];
 $payment['additional_info']['shipments']['receiver_address']['street_name'] =
-	$params_mercadopago['address'] . " - " .
-	$params_mercadopago['number'] . " - " .
+	$params_mercadopago['address'] . ' - ' .
+	$params_mercadopago['number'] . ' - ' .
 	$params_mercadopago['state'];
 $payment['additional_info']['shipments']['receiver_address']['street_number'] = (int) $params_mercadopago['number'];
 // $payment['additional_info']['shipments']['receiver_address']['floor'] = (int) "";
-// $payment['additional_info']['shipments']['receiver_address']['apartment'] = "";
+$payment['additional_info']['shipments']['receiver_address']['apartment'] = "";
 
 
 // Flow: for Customer & Cards

@@ -160,7 +160,7 @@ foreach ( $payments['response'] as $payment ) {
         <div id="form-ticket">
           <div class="form-row">
             <div class="form-col-4">
-              <label  for="firstname"><?php echo $form_labels['form']['name']; ?><em class="obrigatorio"> *</em></label>
+              <label for="firstname"><?php echo $form_labels['form']['name']; ?><em class="obrigatorio"> *</em></label>
               <input type="text" value="<?php echo $customer['firstname']; ?>" placeholder="<?php echo $form_labels['form']['name']; ?>" id="firstname" class="form-control-mine">
             </div>
             <div class="form-col-4">
